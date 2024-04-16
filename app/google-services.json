@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "530151026188",
+    "project_id": "cosmetic-3c6ee",
+    "storage_bucket": "cosmetic-3c6ee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:530151026188:android:ea18aa240fb0d043018829",
+        "android_client_info": {
+          "package_name": "com.example.cosmetic"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_rLAxs-y-Rt52JxLb1o06BOO2bk8xBe0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
