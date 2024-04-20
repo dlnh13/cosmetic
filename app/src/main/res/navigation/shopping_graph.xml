@@ -7,7 +7,11 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.cosmetic.fragments.shopping.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_productDetailFragment"
+            app:destination="@id/productDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/blogFragment"
         android:name="com.example.cosmetic.fragments.shopping.BlogFragment"
@@ -15,9 +19,21 @@
     <fragment
         android:id="@+id/cartFragment"
         android:name="com.example.cosmetic.fragments.shopping.CartFragment"
-        android:label="CartFragment" />
+        android:label="CartFragment" >
+        <action
+            android:id="@+id/action_cartFragment_to_productDetailFragment"
+            app:destination="@id/productDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.cosmetic.fragments.shopping.ProfileFragment"
         android:label="ProfileFragment" />
+    <fragment
+        android:id="@+id/productDetailFragment"
+        android:name="com.example.cosmetic.fragments.shopping.ProductDetailFragment"
+        android:label="ProductDetailFragment" >
+        <argument
+            android:name="product"
+            app:argType="com.example.cosmetic.data.Product" />
+    </fragment>
 </navigation>

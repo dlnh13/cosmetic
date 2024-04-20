@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cosmetic.R
 import com.example.cosmetic.adapters.SpecialProductAdapter
 import com.example.cosmetic.databinding.FragmentBaseCategoryBinding
+import com.example.cosmetic.util.showBottomNavigationView
 
 open class BaseCategory : Fragment(R.layout.fragment_base_category) {
     private lateinit var binding: FragmentBaseCategoryBinding
@@ -30,6 +32,15 @@ open class BaseCategory : Fragment(R.layout.fragment_base_category) {
         super.onViewCreated(view, savedInstanceState)
         setupOfferRv()
         setupSpecialProductsRv()
+
+        specialProductsAdapter.onClick = {
+            val b = Bundle().apply { putParcelable("product",it) }
+            findNavController().navigate(R.id.action_homeFragment_to_productDetailFragment,b)
+        }
+        offerAdapter.onClick = {
+            val b = Bundle().apply { putParcelable("product",it) }
+            findNavController().navigate(R.id.action_homeFragment_to_productDetailFragment,b)
+        }
         binding.rvOffer.addOnScrollListener(object : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView,dx:Int, dy:Int){
                 super.onScrolled(recyclerView, dx, dy)
@@ -73,5 +84,10 @@ open class BaseCategory : Fragment(R.layout.fragment_base_category) {
             )
             adapter = offerAdapter
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        showBottomNavigationView()
     }
 }
