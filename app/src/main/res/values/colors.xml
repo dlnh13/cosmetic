@@ -10,6 +10,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="pink">#FFC0CB</color>
     <color name="g_light_red">#FFC0CB</color>
+    <color name="g_pink2">#ADFFC0CB</color>
     <color name="g_card_background">#FAFDFF</color>
     <color name="g_blue">#000DAE</color>
     <color name="g_blue_gray200">#97AABD</color>
