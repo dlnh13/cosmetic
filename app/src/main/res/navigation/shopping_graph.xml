@@ -23,11 +23,18 @@
         <action
             android:id="@+id/action_cartFragment_to_productDetailFragment"
             app:destination="@id/productDetailFragment" />
+        <action
+            android:id="@+id/action_cartFragment_to_billingFragment"
+            app:destination="@id/billingFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.cosmetic.fragments.shopping.ProfileFragment"
-        android:label="ProfileFragment" />
+        android:label="ProfileFragment" >
+        <action
+            android:id="@+id/action_profileFragment_to_addressFragment"
+            app:destination="@id/addressFragment" />
+    </fragment>
     <fragment
         android:id="@+id/productDetailFragment"
         android:name="com.example.cosmetic.fragments.shopping.ProductDetailFragment"
@@ -35,5 +42,23 @@
         <argument
             android:name="product"
             app:argType="com.example.cosmetic.data.Product" />
+    </fragment>
+    <fragment
+        android:id="@+id/addressFragment"
+        android:name="com.example.cosmetic.fragments.shopping.AddressFragment"
+        android:label="AddressFragment" />
+    <fragment
+        android:id="@+id/billingFragment"
+        android:name="com.example.cosmetic.fragments.shopping.BillingFragment"
+        android:label="BillingFragment" >
+        <action
+            android:id="@+id/action_billingFragment_to_addressFragment"
+            app:destination="@id/addressFragment" />
+        <argument
+            android:name="totalPrice"
+            app:argType="float" />
+        <argument
+            android:name="products"
+            app:argType="com.example.cosmetic.data.CartProduct[]" />
     </fragment>
 </navigation>

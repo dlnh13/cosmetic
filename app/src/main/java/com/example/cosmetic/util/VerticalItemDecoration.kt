@@ -1,4 +1,4 @@
-package com.example.kelineyt.util
+package com.example.cosmetic.util
 
 import android.graphics.Rect
 import android.view.View

@@ -1,4 +1,4 @@
-package com.example.kelineyt.data
+package com.example.cosmetic.data
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
@@ -9,8 +9,8 @@ data class Address(
     val fullName: String,
     val street: String,
     val phone: String,
-    val city: String,
-    val state: String
+    val district: String,
+    val city: String
 ): Parcelable {
 
     constructor(): this("","","","","","")

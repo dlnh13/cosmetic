@@ -4,19 +4,19 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/imageShadow"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
         android:src="#f8f9fa"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="invisible"/>
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/imageColor"
-        android:layout_width="21dp"
-        android:layout_height="21dp"
+        android:layout_width="50dp"
+        android:layout_height="28dp"
         android:src="@color/g_gray700"
         app:layout_constraintStart_toStartOf="@id/imageShadow"
         app:layout_constraintTop_toTopOf="@id/imageShadow"
@@ -32,7 +32,7 @@
         app:layout_constraintTop_toTopOf="@id/imageColor"
         app:layout_constraintBottom_toBottomOf="@id/imageColor"
         app:layout_constraintEnd_toEndOf="@id/imageColor"
-        android:text="S"
+        android:text="200ml"
         android:textColor="@color/white"
         android:textAlignment="center"
         android:visibility="visible"/>

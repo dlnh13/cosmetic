@@ -23,15 +23,28 @@
         app:layout_constraintEnd_toEndOf="@id/imageShadow"
         app:layout_constraintBottom_toBottomOf="@id/imageShadow"/>
 
-    <ImageView
-        android:id="@+id/imagePicked"
-        android:layout_width="18sp"
-        android:layout_height="18sp"
+<!--    <ImageView-->
+<!--        android:id="@+id/imagePicked"-->
+<!--        android:layout_width="18sp"-->
+<!--        android:layout_height="18sp"-->
+<!--        android:src="@drawable/ic_picked"-->
+<!--        app:layout_constraintStart_toStartOf="@id/imageShadow"-->
+<!--        android:layout_marginStart="1dp"-->
+<!--        app:layout_constraintTop_toTopOf="@id/imageColor"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/imageColor"-->
+<!--        android:visibility="invisible"/>-->
+    <TextView
+        android:id="@+id/tvColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@drawable/ic_picked"
-        app:layout_constraintStart_toStartOf="@id/imageShadow"
-        android:layout_marginStart="1dp"
+        app:layout_constraintStart_toStartOf="@id/imageColor"
         app:layout_constraintTop_toTopOf="@id/imageColor"
         app:layout_constraintBottom_toBottomOf="@id/imageColor"
-        android:visibility="invisible"/>
+        app:layout_constraintEnd_toEndOf="@id/imageColor"
+        android:text="Đỏ cam"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:visibility="visible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

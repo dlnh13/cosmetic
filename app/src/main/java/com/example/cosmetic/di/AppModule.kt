@@ -1,7 +1,9 @@
 package com.example.cosmetic.di
 
+import com.example.cosmetic.firebase.FirebaseCommon
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import dagger.Module
 import dagger.Provides
@@ -18,4 +20,10 @@ object AppModule {
     @Provides
     @Singleton
     fun provideFirebaseFirestoreDatabase() = Firebase.firestore
+    @Provides
+    @Singleton
+    fun provideFirebaseCommon(
+        firebaseAuth : FirebaseAuth,
+        firestore: FirebaseFirestore
+    ) = FirebaseCommon(firestore,firebaseAuth)
 }
