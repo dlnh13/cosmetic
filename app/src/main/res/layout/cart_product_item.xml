@@ -20,6 +20,15 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
+        <CheckBox
+            android:checked="false"
+            android:id="@+id/cbChosen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/imageCartProductSize"
+            app:layout_constraintBottom_toBottomOf="parent"
+         />
+
         <ImageView
             android:id="@+id/imageCartProduct"
             android:layout_width="80dp"

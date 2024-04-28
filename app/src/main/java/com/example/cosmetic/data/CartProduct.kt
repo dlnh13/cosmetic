@@ -8,7 +8,8 @@ data class CartProduct(
     val product: Product,
     val quantity : Int,
     val selectedColor: String? = null,
-    val selectedSize: String? = null
+    val selectedSize: String? = null,
+    var selected:Boolean = false
 ):Parcelable{
-    constructor() : this(Product(),1,null,null)
+    constructor() : this(Product(),1,null,null, false)
 }

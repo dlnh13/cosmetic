@@ -2,12 +2,15 @@ package com.example.cosmetic.adapters
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.CheckBox
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.cosmetic.R
 import com.example.cosmetic.data.CartProduct
 import com.example.cosmetic.databinding.CartProductItemBinding
 import com.example.cosmetic.helper.getProductPrice
@@ -75,6 +78,14 @@ class CartProductAdapter : RecyclerView.Adapter<CartProductAdapter.CartProductsV
             holder.binding.imageMinus.setOnClickListener {
                 onMinusClick?.invoke(cartProduct)
             }
+            holder.itemView.apply {
+                cartProduct.selected = holder.binding.cbChosen.isChecked
+                holder.binding.cbChosen.setOnCheckedChangeListener { _, isChecked ->
+                    cartProduct.selected = holder.binding.cbChosen.isChecked
+                    onCheckboxClick?.invoke(cartProduct, cartProduct.selected)
+
+                }
+            }
         }
 
         override fun getItemCount(): Int {
@@ -84,6 +95,5 @@ class CartProductAdapter : RecyclerView.Adapter<CartProductAdapter.CartProductsV
         var onProductClick: ((CartProduct) -> Unit)? = null
         var onPlusClick: ((CartProduct) -> Unit)? = null
         var onMinusClick: ((CartProduct) -> Unit)? = null
-
-
+        var onCheckboxClick:((CartProduct,Boolean)->Unit)? = null
         }

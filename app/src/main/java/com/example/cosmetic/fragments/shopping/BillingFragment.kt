@@ -2,6 +2,7 @@ package com.example.cosmetic.fragments.shopping
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,6 +47,7 @@ class BillingFragment : Fragment() {
 
         products = args.products.toList()
         totalPrice = args.totalPrice
+
     }
 
     override fun onCreateView(

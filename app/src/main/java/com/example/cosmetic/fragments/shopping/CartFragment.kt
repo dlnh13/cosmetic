@@ -2,6 +2,7 @@ package com.example.cosmetic.fragments.shopping
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cosmetic.R
 import com.example.cosmetic.adapters.CartProductAdapter
+import com.example.cosmetic.data.CartProduct
+import com.example.cosmetic.data.Product
 import com.example.cosmetic.databinding.FragmentCartBinding
 import com.example.cosmetic.firebase.FirebaseCommon
 import com.example.cosmetic.util.Resource
@@ -25,6 +28,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
     private lateinit var binding: FragmentCartBinding
     private val cartAdapter by lazy { CartProductAdapter() }
     private val viewModel by activityViewModels<CartViewModel>()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,12 +43,14 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
         setupCartRv()
         var totalPrice = 0f
+        binding.tvTotalPrice.text = "$ $totalPrice"
+
 
         lifecycleScope.launchWhenStarted {
             viewModel.productsPrice.collectLatest { price ->
                 price?.let {
-                    totalPrice = it
-                    binding.tvTotalPrice.text = "$ $price"
+                    totalPrice = 0f
+                    binding.tvTotalPrice.text = "$ $totalPrice"
                 }
             }
         }
@@ -61,10 +67,16 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         cartAdapter.onMinusClick = {
             viewModel.changeQuantity(it, FirebaseCommon.QuantityChange.DECREASE)
         }
+        cartAdapter.onCheckboxClick = { cartProduct, isChecked ->
+            val testsprice = viewModel.test(cartAdapter.differ.currentList.filter { it.selected }
+            )
+            totalPrice = testsprice
+            binding.tvTotalPrice.text = "$ $testsprice"
+        }
         binding.buttonCheckout.setOnClickListener {
             val action = CartFragmentDirections.actionCartFragmentToBillingFragment(
                 totalPrice,
-                cartAdapter.differ.currentList.toTypedArray()
+                cartAdapter.differ.currentList.filter { it.selected }.toTypedArray()
             )
             findNavController().navigate(action)
         }
