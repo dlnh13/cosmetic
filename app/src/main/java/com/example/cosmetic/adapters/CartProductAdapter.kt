@@ -30,13 +30,15 @@ class CartProductAdapter : RecyclerView.Adapter<CartProductAdapter.CartProductsV
                     cartProduct.product.offerPercentage.getProductPrice(cartProduct.product.price)
                 tvProductCartPrice.text = "$ ${String.format("%.2f", priceAfterPercentage)}"
 
-                tvCartProductColor.text = cartProduct.selectedColor ?: "".also {
-                    imageCartProductSize.setImageDrawable(
-                        ColorDrawable(Color.TRANSPARENT)
+                tvCartProductColor.text = cartProduct.selectedColor ?: ""
+                    .also {
+                    imageCartProductColor.setImageDrawable(
+                        ColorDrawable(Color.WHITE)
                     )}
-                    tvCartProductSize.text = cartProduct.selectedSize ?: "".also {
+                    tvCartProductSize.text = cartProduct.selectedSize ?: ""
+                        .also {
                         imageCartProductSize.setImageDrawable(
-                            ColorDrawable(Color.TRANSPARENT)
+                            ColorDrawable(Color.WHITE)
                         )
                     }
                 }
