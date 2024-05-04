@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/shopping_graph"
-    app:startDestination="@id/userAccountFragment">
+    app:startDestination="@id/allOrdersFragment">
 
     <fragment
         android:id="@+id/homeFragment"
@@ -68,4 +68,20 @@
         android:id="@+id/userAccountFragment"
         android:name="com.example.cosmetic.fragments.settings.UserAccountFragment"
         android:label="UserAccountFragment" />
+    <fragment
+        android:id="@+id/allOrdersFragment"
+        android:name="com.example.cosmetic.fragments.shopping.AllOrdersFragment"
+        android:label="AllOrdersFragment" >
+        <action
+            android:id="@+id/action_allOrdersFragment_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/orderDetailFragment"
+        android:name="com.example.cosmetic.fragments.settings.OrderDetailFragment"
+        android:label="OrderDetailFragment" >
+        <argument
+            android:name="order"
+            app:argType="com.example.cosmetic.data.order.Order" />
+    </fragment>
 </navigation>
