@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/shopping_graph"
-    app:startDestination="@id/allOrdersFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/homeFragment"
@@ -37,6 +37,12 @@
         <action
             android:id="@+id/action_profileFragment_to_userAccountFragment"
             app:destination="@id/userAccountFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_allOrdersFragment"
+            app:destination="@id/allOrdersFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_billingFragment"
+            app:destination="@id/billingFragment" />
     </fragment>
     <fragment
         android:id="@+id/productDetailFragment"
@@ -49,7 +55,13 @@
     <fragment
         android:id="@+id/addressFragment"
         android:name="com.example.cosmetic.fragments.shopping.AddressFragment"
-        android:label="AddressFragment" />
+        android:label="AddressFragment" >
+        <argument
+            android:name="address"
+            app:argType="com.example.cosmetic.data.Address"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
     <fragment
         android:id="@+id/billingFragment"
         android:name="com.example.cosmetic.fragments.shopping.BillingFragment"
@@ -63,6 +75,9 @@
         <argument
             android:name="products"
             app:argType="com.example.cosmetic.data.CartProduct[]" />
+        <argument
+            android:name="payment"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/userAccountFragment"

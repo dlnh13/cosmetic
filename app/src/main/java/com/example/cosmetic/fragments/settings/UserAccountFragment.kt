@@ -59,13 +59,16 @@ class UserAccountFragment : Fragment() {
                     is Resource.Loading -> {
                         showUserLoading()
                     }
+
                     is Resource.Success -> {
                         hideUserLoading()
                         showUserInformation(it.data!!)
                     }
+
                     is Resource.Error -> {
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                     }
+
                     else -> Unit
                 }
             }
@@ -77,14 +80,17 @@ class UserAccountFragment : Fragment() {
                     is Resource.Loading -> {
                         binding.buttonSave.startAnimation()
                     }
+
                     is Resource.Success -> {
                         binding.buttonSave.revertAnimation()
                         findNavController().navigateUp()
                     }
+
                     is Resource.Error -> {
                         binding.buttonSave.revertAnimation()
                         Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                     }
+
                     else -> Unit
                 }
             }
@@ -117,7 +123,8 @@ class UserAccountFragment : Fragment() {
 
     private fun showUserInformation(data: User) {
         binding.apply {
-            Glide.with(this@UserAccountFragment).load(data.imagePath).error(ColorDrawable(Color.BLACK)).into(imageUser)
+            Glide.with(this@UserAccountFragment).load(data.imagePath)
+                .error(ColorDrawable(Color.BLACK)).into(imageUser)
             edFirstName.setText(data.firstName)
             edLastName.setText(data.lastName)
             edEmail.setText(data.email)
@@ -152,5 +159,5 @@ class UserAccountFragment : Fragment() {
             buttonSave.visibility = View.INVISIBLE
         }
 
-}
+    }
 }
