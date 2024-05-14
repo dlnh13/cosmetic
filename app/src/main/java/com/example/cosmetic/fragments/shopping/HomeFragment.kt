@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.cosmetic.R
 import com.example.cosmetic.adapters.HomeViewpagerAdapter
 import com.example.cosmetic.databinding.FragmentHomeBinding
@@ -52,5 +53,9 @@ class HomeFragment:Fragment(R.layout.fragment_home) {
                 5 -> tab.text = "Perfume"
             }
         }.attach()
+
+        binding.btnMess.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_chatFragment)
+        }
     }
 }

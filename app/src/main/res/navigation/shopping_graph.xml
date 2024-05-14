@@ -11,6 +11,9 @@
         <action
             android:id="@+id/action_homeFragment_to_productDetailFragment"
             app:destination="@id/productDetailFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
     </fragment>
     <fragment
         android:id="@+id/blogFragment"
@@ -99,4 +102,8 @@
             android:name="order"
             app:argType="com.example.cosmetic.data.order.Order" />
     </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.cosmetic.fragments.shopping.ChatFragment"
+        android:label="ChatFragment" />
 </navigation>

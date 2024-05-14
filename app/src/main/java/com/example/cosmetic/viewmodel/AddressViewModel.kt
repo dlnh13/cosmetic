@@ -25,7 +25,6 @@ class AddressViewModel @Inject constructor(
 
     private val _error = MutableSharedFlow<String>()
     val error = _error.asSharedFlow()
-
     fun addAddress(address: Address) {
         val validateInputs = validateInputs(address)
 
