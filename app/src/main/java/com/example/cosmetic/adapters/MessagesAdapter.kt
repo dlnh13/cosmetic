@@ -12,7 +12,7 @@ import com.example.cosmetic.R
 import com.example.cosmetic.data.Message
 import com.example.cosmetic.util.Uid.getUid
 
-class MessagesAdapter(private val currentUserId: String) : RecyclerView.Adapter<MessagesHolder>() {
+class MessagesAdapter() : RecyclerView.Adapter<MessagesHolder>() {
 
     private val LEFT = 0
     private val RIGHT = 1

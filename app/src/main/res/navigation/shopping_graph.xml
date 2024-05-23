@@ -17,8 +17,15 @@
     </fragment>
     <fragment
         android:id="@+id/blogFragment"
-        android:name="com.example.cosmetic.fragments.shopping.BlogFragment"
-        android:label="BlogFragment" />
+        android:name="com.example.cosmetic.fragments.blog.BlogFragment"
+        android:label="BlogFragment" >
+        <action
+            android:id="@+id/action_blogFragment_to_createPostFragment"
+            app:destination="@id/createPostFragment" />
+        <action
+            android:id="@+id/action_blogFragment_to_commentFragment"
+            app:destination="@id/commentFragment" />
+    </fragment>
     <fragment
         android:id="@+id/cartFragment"
         android:name="com.example.cosmetic.fragments.shopping.CartFragment"
@@ -32,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.cosmetic.fragments.shopping.ProfileFragment"
+        android:name="com.example.cosmetic.fragments.settings.ProfileFragment"
         android:label="ProfileFragment" >
         <action
             android:id="@+id/action_profileFragment_to_addressFragment"
@@ -106,4 +113,16 @@
         android:id="@+id/chatFragment"
         android:name="com.example.cosmetic.fragments.shopping.ChatFragment"
         android:label="ChatFragment" />
+    <fragment
+        android:id="@+id/createPostFragment"
+        android:name="com.example.cosmetic.fragments.blog.CreatePostFragment"
+        android:label="CreatePostFragment" />
+    <dialog
+        android:id="@+id/commentFragment"
+        android:name="com.example.cosmetic.fragments.blog.CommentFragment"
+        android:label="CommentFragment" >
+        <argument
+            android:name="post"
+            app:argType="com.example.cosmetic.data.Post" />
+    </dialog>
 </navigation>

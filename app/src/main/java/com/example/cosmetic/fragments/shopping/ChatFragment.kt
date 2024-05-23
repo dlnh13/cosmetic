@@ -57,6 +57,7 @@ class ChatFragment:Fragment() {
         binding.icClose.setOnClickListener {
             findNavController().navigateUp()
         }
+        // send mess
         binding.btnSend.setOnClickListener {
             val messageContent = binding.edMessage.text.toString().trim()
             if (messageContent.isNotEmpty()) {
@@ -77,7 +78,7 @@ class ChatFragment:Fragment() {
     }
 
     private fun setupMessageRv() {
-        messagesAdapter = MessagesAdapter(getUid())
+        messagesAdapter = MessagesAdapter()
         binding.rvMessages.apply {
             adapter = messagesAdapter
             layoutManager =
