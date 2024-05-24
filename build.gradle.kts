@@ -6,6 +6,8 @@ buildscript {
 
         //def nav_version = "2.5.0"
         classpath ("androidx.navigation:navigation-safe-args-gradle-plugin:2.5.0")
+        classpath ("com.google.gms:google-services:<latest_version>")
+
     }
 }
 plugins {

@@ -12,6 +12,10 @@ dependencyResolutionManagement {
         mavenCentral()
         //noinspection JcenterRepositoryObsolete
         jcenter()
+        maven (
+            url = "https://jitpack.io"
+        )
+
     }
 }
 

@@ -55,6 +55,9 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    aaptOptions {
+        noCompress ( "tflite")
+    }
 }
 
 dependencies {
@@ -116,6 +119,10 @@ dependencies {
 
     //Coroutines with firebase
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.5.1")
+    api ("com.google.firebase:firebase-ml-vision:<latest_version>")
+    implementation ("com.google.firebase:firebase-ml-vision-automl:<latest_version>")
+    implementation ("com.google.firebase:firebase-ml-model-interpreter:<latest_version>")
+    implementation ("com.github.nipunru:nsfw-detector-android:1.0.0")
 
 }
 kapt {

@@ -6,7 +6,6 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,29 +13,23 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
-import com.bumptech.glide.Glide
-import com.example.cosmetic.R
+import androidx.navigation.fragment.findNavController
 import com.example.cosmetic.adapters.ViewPager2Images
 import com.example.cosmetic.data.Post
-import com.example.cosmetic.data.User
 import com.example.cosmetic.databinding.FragmentCreatePostBinding
-import com.example.cosmetic.util.Resource
 import com.example.cosmetic.util.Uid.getUid
 import com.example.cosmetic.util.getTime
 import com.example.cosmetic.viewmodel.CreatePostViewModel
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
+import com.nipunru.nsfwdetector.NSFWDetector
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
-import java.io.ByteArrayOutputStream
-import java.util.ArrayList
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
 import java.util.UUID
 
 @AndroidEntryPoint
@@ -62,32 +55,69 @@ class CreatePostFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        var shouldContinue = true // Biến để kiểm soát việc tiếp tục lặp qua các ảnh
         imageActivityResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     val intent = result.data
                     displayImages.clear()
                     selectedImages.clear()
-                    //Multiple images selected
-                    if (intent?.clipData != null) {
-                        val count = intent.clipData?.itemCount ?: 0
-                        (0 until count).forEach {
-                            val imagesUri = intent.clipData?.getItemAt(it)?.uri
-                            imagesUri?.let { selectedImages.add(it) }
-                            ///////// images uri = link img de viewpager???
-                            displayImages.add(imagesUri.toString())
-                        }
+                    val tasks = mutableListOf<Deferred<Unit>>()
+                    lifecycleScope.launch {
+                        binding.btnAdd.isVisible = false // Vô hiệu hóa nút button
+                        //Multiple images selected
+                        if (intent?.clipData != null) {
+                            val count = intent.clipData?.itemCount ?: 0
+                            (0 until count).forEach {
+                                if (!shouldContinue) return@forEach // Ngắt lặp nếu không cần tiếp tục
+                                val imagesUri = intent.clipData?.getItemAt(it)?.uri
+                                imagesUri?.let {
+                                    val task = async {
+                                        checkNSFWAndAddImage(it) { isNSFW ->
+                                            if (!isNSFW) {
+                                                selectedImages.add(it)
+                                                //displayImages.add(it.toString())
+                                            }
+                                            if(isNSFW) {
+                                                shouldContinue = false // Đặt biến shouldContinue thành false nếu phát hiện ảnh NSFW
+                                                cancelDialog()
+                                                findNavController().navigateUp()
+                                            }
+                                        }
+                                        //  selectedImages.add(it)
+                                    }
+                                    tasks.add(task)
+                                }
+                                ///////// images uri = link img de viewpager???
+                                displayImages.add(imagesUri.toString())
+                            }
 
-                    } else { //One images was selected
-                        val imageUri = intent?.data
-                        imageUri?.let { selectedImages.add(it) }
-                        displayImages.add(imageUri.toString())
+                        } else { //One images was selected
+                            val imageUri = intent?.data
+                            imageUri?.let {
+                                val task = async {
+                                    checkNSFWAndAddImage(it) { isNSFW ->
+                                        if (!isNSFW) {
+                                            selectedImages.add(it)
+                                        }
+                                        if(isNSFW) {
+                                            cancelDialog()
+                                            findNavController().navigateUp()
+                                        }
+                                    }
+                                    //selectedImages.add(it)
+                                }
+                                tasks.add(task)
+                            }
+                            displayImages.add(imageUri.toString())
+                            //  displayImages.add(imageUri.toString())
+                        }
+                        tasks.awaitAll()
+                        viewPagerAdapter.differ.submitList(displayImages.toList())
+                        binding.btnAdd.isVisible = true // Kích hoạt lại nút button sau khi tác vụ hoàn thành
                     }
 
-                    viewPagerAdapter.differ.submitList(displayImages.toList())
                 }
-
             }
 //        cameraActivityResultLauncher =
 //            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -102,7 +132,19 @@ class CreatePostFragment : Fragment() {
 //                }
 //            }
     }
-
+    private fun checkNSFWAndAddImage(imageUri: Uri, callback: (Boolean) -> Unit) {
+        val bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, imageUri)
+        val confidenceThreshold: Float = 0.7F //(Optional) Default is 0.7
+        NSFWDetector.isNSFW(bitmap) { isNSFW, confidence, _ ->
+            if (isNSFW) {
+                Toast.makeText(requireContext(), "NSFW content detected with confidence: $confidence", Toast.LENGTH_SHORT).show()
+                callback(true)
+            } else {
+               // Toast.makeText(requireContext(), "SFW with confidence: $confidence", Toast.LENGTH_SHORT).show()
+                callback(false)
+            }
+        }
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViewpager()
@@ -125,7 +167,18 @@ class CreatePostFragment : Fragment() {
             }
         }
     }
-
+    private fun cancelDialog() {
+        val options = arrayOf<CharSequence>("Cancel")
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("Ảnh không phù hợp!")
+        builder.setItems(options) { dialog, item ->
+            when {
+                options[item] == "Cancel" -> {
+                }
+            }
+        }
+        builder.show()
+    }
     private fun addImageDialog() {
         val options = arrayOf<CharSequence>("Take Photo", "Choose from Gallery", "Cancel")
         val builder = AlertDialog.Builder(requireContext())
