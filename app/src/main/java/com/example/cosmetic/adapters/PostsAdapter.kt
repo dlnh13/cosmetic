@@ -1,5 +1,6 @@
 package com.example.cosmetic.adapters
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.util.Log
@@ -11,6 +12,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -99,21 +102,22 @@ class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostsViewHolder>() {
                 onComment?.invoke(post)
             }
             isLikedByCurrentUser = post.likers?.contains(getUid()) ?: false
-            val imageResource = if (isLikedByCurrentUser) {
-                R.drawable.heartfilled
+            if (isLikedByCurrentUser) {
+                holder.imgLike.setImageResource(R.drawable.heartfilled)
+                holder.imgLike.setColorFilter(ContextCompat.getColor(context, R.color.red));
             } else {
-                R.drawable.heart
+                holder.imgLike.setImageResource(R.drawable.heart)
             }
-            holder.imgLike.setImageResource(imageResource)
             holder.imgLike.setOnClickListener {
                 onClick?.invoke(post, isLikedByCurrentUser)
                 isLikedByCurrentUser = !isLikedByCurrentUser
-                val imageResource = if (isLikedByCurrentUser) {
-                    R.drawable.heartfilled
+                if (isLikedByCurrentUser) {
+
+                    holder.imgLike.setImageResource(R.drawable.heartfilled)
+                    holder.imgLike.setColorFilter(ContextCompat.getColor(context, R.color.red));
                 } else {
-                    R.drawable.heart
+                    holder.imgLike.setImageResource(R.drawable.heart)
                 }
-                holder.imgLike.setImageResource(imageResource)
             }
         }
 
