@@ -47,7 +47,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/imgPost"
-            android:layout_width="400dp"
+            android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
@@ -56,7 +56,7 @@
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/viewPagerPostImages"
-                android:layout_width="400dp"
+                android:layout_width="match_parent"
                 android:layout_height="400dp" />
         </androidx.cardview.widget.CardView>
 
@@ -67,10 +67,14 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:layout_gravity="center"
                 android:id="@+id/imgLike"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@drawable/heart" />
+                android:src="@drawable/heart"
+                app:tint="@color/black"
+                android:layout_marginLeft="2dp"
+                />
 
             <TextView
                 android:id="@+id/tvLikes"
@@ -86,9 +90,9 @@
                 android:id="@+id/btnComment"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/comment"
+                android:src="@drawable/ic_comment"
+                android:layout_marginRight="5dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="3dp"
                 android:layout_marginStart="220dp"
                 />
 

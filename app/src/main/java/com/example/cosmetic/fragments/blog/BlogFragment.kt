@@ -37,6 +37,7 @@ class BlogFragment : Fragment(R.layout.fragment_blog) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupPostRv()
         lifecycleScope.launchWhenStarted {
             viewModel.posts.collectLatest {
                 when (it) {
@@ -61,7 +62,7 @@ class BlogFragment : Fragment(R.layout.fragment_blog) {
         binding.btnAdd.setOnClickListener {
             findNavController().navigate(R.id.action_blogFragment_to_createPostFragment)
         }
-        setupPostRv()
+//        setupPostRv()
         postsAdapter.onClick = { post, isLiked ->
             viewModel.likeClicked(post, isLiked)
         }

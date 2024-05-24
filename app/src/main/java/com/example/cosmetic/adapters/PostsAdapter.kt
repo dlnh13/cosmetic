@@ -8,11 +8,16 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Glide.init
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.cosmetic.R
 import com.example.cosmetic.data.Address
 import com.example.cosmetic.data.CartProduct
@@ -28,45 +33,31 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostsViewHolder>() {
-    var isLikedByCurrentUser: Boolean = false
     private val coroutineScope = MainScope() // CoroutineScope tied to the main thread
 
-    inner class PostsViewHolder(val binding: FeedItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        private val viewPagerAdapter = ViewPager2Images()
 
+    inner class PostsViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView.rootView) {
+        private val viewPagerAdapter = ViewPager2Images()
+        val btnComment: ImageView = itemView.findViewById(R.id.btnComment)
+        val imgLike: ImageView = itemView.findViewById(R.id.imgLike)
+        val tvName: TextView = itemView.findViewById(R.id.tvName)
+        val tvTime: TextView = itemView.findViewById(R.id.tvTime)
+        val tvCaption: TextView = itemView.findViewById(R.id.tvCaption)
+        val tvLikes: TextView = itemView.findViewById(R.id.tvLikes)
+        val viewPagerPostImages: ViewPager2 = itemView.findViewById(R.id.viewPagerPostImages)
+        val imgProfile: ImageView = itemView.findViewById(R.id.imgProfile)
         fun bind(post: Post) {
-            binding.apply {
+            coroutineScope.launch {
+                // Reset trạng thái của ViewPager2
+                viewPagerPostImages.adapter = null
+                // Gán adapter và dữ liệu mới cho ViewPager2
                 viewPagerPostImages.adapter = viewPagerAdapter
                 viewPagerAdapter.differ.submitList(post.imagePost)
-                //tvName.text = Uid.getUserName(post.uid)
-                Glide.with(itemView).load(post.profileImage).into(imgProfile)
-                coroutineScope.launch {
-                    tvName.text = getUserName(post.uid)
-                }
-                tvLikes.text = "${post.likes} Likes"
-                tvTime.text = post.time.toString()
-                tvCaption.text = post.caption.toString()
-                isLikedByCurrentUser = post.likers?.contains(getUid()) ?: false
-
-                val imageResource = if (isLikedByCurrentUser) {
-                    // Nếu người dùng đã like bài viết trước đó
-                    R.drawable.heartfilled
-                } else {
-                    // Nếu người dùng chưa like bài viết trước đó
-                    R.drawable.ic_favorite
-                }
-                imgLike.setImageResource(imageResource)
-
-                imgLike.setOnClickListener {
-                    onClick?.invoke(post, isLikedByCurrentUser)
-                    // Cập nhật trạng thái của isLikedByCurrentUser
-                    isLikedByCurrentUser = !isLikedByCurrentUser
-                }
             }
         }
-
     }
+
 
     private val diffCallback = object : DiffUtil.ItemCallback<Post>() {
         override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
@@ -83,20 +74,47 @@ class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostsViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): PostsAdapter.PostsViewHolder {
-        return PostsViewHolder(
-            FeedItemBinding.inflate(
-                LayoutInflater.from(parent.context)
-            )
-        )
+    ): PostsViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val view = inflater.inflate(R.layout.feed_item, parent, false)
+        return PostsViewHolder(view)
     }
-
 
     override fun onBindViewHolder(holder: PostsViewHolder, position: Int) {
         val post = differ.currentList[position]
-        holder.bind(post)
-        holder.binding.btnComment.setOnClickListener {
-            onComment?.invoke(post)
+        holder.itemView.apply {
+            holder.bind(post)
+            var isLikedByCurrentUser: Boolean
+
+            Glide.with(holder.itemView.context).load(post.profileImage)
+                .diskCacheStrategy(DiskCacheStrategy.NONE) // Vô hiệu hóa cache
+                .into(holder.imgProfile)
+            coroutineScope.launch {
+                holder.tvName.text = getUserName(post.uid)
+            }
+            holder.tvLikes.text = "${post.likes} Likes"
+            holder.tvTime.text = post.time.toString()
+            holder.tvCaption.text = post.caption.toString()
+            holder.btnComment.setOnClickListener {
+                onComment?.invoke(post)
+            }
+            isLikedByCurrentUser = post.likers?.contains(getUid()) ?: false
+            val imageResource = if (isLikedByCurrentUser) {
+                R.drawable.heartfilled
+            } else {
+                R.drawable.heart
+            }
+            holder.imgLike.setImageResource(imageResource)
+            holder.imgLike.setOnClickListener {
+                onClick?.invoke(post, isLikedByCurrentUser)
+                isLikedByCurrentUser = !isLikedByCurrentUser
+                val imageResource = if (isLikedByCurrentUser) {
+                    R.drawable.heartfilled
+                } else {
+                    R.drawable.heart
+                }
+                holder.imgLike.setImageResource(imageResource)
+            }
         }
 
 
@@ -113,3 +131,7 @@ class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostsViewHolder>() {
         coroutineScope.cancel()
     }
 }
+
+
+
+

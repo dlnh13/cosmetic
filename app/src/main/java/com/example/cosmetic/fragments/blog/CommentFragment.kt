@@ -133,7 +133,7 @@ class CommentFragment : BottomSheetDialogFragment() {
 
             val layoutParams = it.layoutParams
             val windowHeight = resources.displayMetrics.heightPixels
-            val desiredHeight = windowHeight - dpToPx(10) // Cách đáy 10dp
+            val desiredHeight = windowHeight - dpToPx(30) // Cách đáy 10dp
             layoutParams.height = desiredHeight
             it.layoutParams = layoutParams
         }
