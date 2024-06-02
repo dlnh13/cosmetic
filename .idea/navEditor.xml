@@ -166,12 +166,17 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="183" />
-                            <option name="y" value="15" />
+                            <option name="x" value="575" />
+                            <option name="y" value="-9" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_blogFragment_to_commentFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_blogFragment_to_createPostFragment">
                               <value>
                                 <LayoutPositions />
@@ -187,8 +192,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="437" />
-                            <option name="y" value="10" />
+                            <option name="x" value="214" />
+                            <option name="y" value="1" />
                           </Point>
                         </option>
                         <option name="myPositions">
@@ -270,6 +275,18 @@
                       </LayoutPositions>
                     </value>
                   </entry>
+                  <entry key="notificationFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="1318" />
+                            <option name="y" value="286" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="orderDetailFragment">
                     <value>
                       <LayoutPositions>
@@ -335,8 +352,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="1122" />
-                            <option name="y" value="1" />
+                            <option name="x" value="1257" />
+                            <option name="y" value="-183" />
                           </Point>
                         </option>
                       </LayoutPositions>

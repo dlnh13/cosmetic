@@ -78,6 +78,7 @@
                 android:layout_height="10dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="7dp"
+                android:id="@+id/img_favorite"
                 android:src="@drawable/ic_favorite" />
         </LinearLayout>
 

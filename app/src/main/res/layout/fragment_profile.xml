@@ -239,14 +239,14 @@
                     android:layout_marginStart="15dp"
                     android:layout_gravity="center_vertical"/>
 
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switchNotification"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:buttonTint="#4cd964"
-                    android:checked="true"
-                    />
+<!--                <androidx.appcompat.widget.SwitchCompat-->
+<!--                    android:id="@+id/switchNotification"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center_vertical"-->
+<!--                    android:buttonTint="#4cd964"-->
+<!--                    android:checked="true"-->
+<!--                    />-->
 
             </LinearLayout>
         </LinearLayout>

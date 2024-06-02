@@ -10,7 +10,7 @@ import com.example.cosmetic.data.Product
 import com.example.cosmetic.databinding.BestsellerItemBinding
 
 class BestSellersAdapter : RecyclerView.Adapter<BestSellersAdapter.BestSellersViewHolder>() {
-    inner class BestSellersViewHolder(private val binding : BestsellerItemBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class BestSellersViewHolder( val binding : BestsellerItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(product: Product){
             binding.apply {
                 Glide.with(itemView).load(product.images[0]).into(imageBestSellerItem)
@@ -41,6 +41,9 @@ class BestSellersAdapter : RecyclerView.Adapter<BestSellersAdapter.BestSellersVi
         holder.itemView.setOnClickListener {
             onClick?.invoke(product)
         }
+        holder.binding.imgFavorite.setOnClickListener {
+            onFavoriteClick?.invoke(product)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -48,5 +51,6 @@ class BestSellersAdapter : RecyclerView.Adapter<BestSellersAdapter.BestSellersVi
     }
 
     var onClick: ((Product) -> Unit)? = null
+    var onFavoriteClick: ((Product) -> Unit)? = null
 
 }

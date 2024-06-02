@@ -1,6 +1,9 @@
 package com.example.cosmetic.activities
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -10,7 +13,9 @@ import com.example.cosmetic.R
 import com.example.cosmetic.databinding.ActivityShoppingBinding
 import com.example.cosmetic.util.Resource
 import com.example.cosmetic.viewmodel.CartViewModel
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 

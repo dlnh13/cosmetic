@@ -53,6 +53,9 @@
         <action
             android:id="@+id/action_profileFragment_to_billingFragment"
             app:destination="@id/billingFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_notificationFragment"
+            app:destination="@id/notificationFragment" />
     </fragment>
     <fragment
         android:id="@+id/productDetailFragment"
@@ -125,4 +128,12 @@
             android:name="post"
             app:argType="com.example.cosmetic.data.Post" />
     </dialog>
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.example.cosmetic.fragments.settings.NotificationFragment"
+        android:label="NotificationFragment" >
+        <action
+            android:id="@+id/action_notificationFragment_to_productDetailFragment"
+            app:destination="@id/productDetailFragment" />
+    </fragment>
 </navigation>

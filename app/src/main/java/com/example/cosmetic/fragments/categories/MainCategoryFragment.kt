@@ -55,10 +55,17 @@ class MainCategoryFragment :Fragment(R.layout.fragment_main_category) {
             val b = Bundle().apply { putParcelable("product",it) }
             findNavController().navigate(R.id.action_homeFragment_to_productDetailFragment,b)
         }
-
+        bestSellersAdapter.onFavoriteClick = {
+            viewModel.addFavorite(it)
+            Toast.makeText(requireContext(),"Thêm sản phẩm vào yêu thích!",Toast.LENGTH_SHORT).show()
+        }
         discountProductAdapter.onClick = {
             val b = Bundle().apply { putParcelable("product",it) }
             findNavController().navigate(R.id.action_homeFragment_to_productDetailFragment,b)
+        }
+        discountProductAdapter.onFavoriteClick = {
+            viewModel.addFavorite(it)
+            Toast.makeText(requireContext(),"Thêm sản phẩm vào yêu thích!",Toast.LENGTH_SHORT).show()
         }
         lifecycleScope.launchWhenStarted {
             viewModel.bestSellerProducts.collectLatest {

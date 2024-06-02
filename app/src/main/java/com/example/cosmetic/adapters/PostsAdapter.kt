@@ -103,20 +103,20 @@ class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostsViewHolder>() {
             }
             isLikedByCurrentUser = post.likers?.contains(getUid()) ?: false
             if (isLikedByCurrentUser) {
-                holder.imgLike.setImageResource(R.drawable.heartfilled)
+                holder.imgLike.setImageResource(R.drawable.ic_favorite_red)
                 holder.imgLike.setColorFilter(ContextCompat.getColor(context, R.color.red));
             } else {
-                holder.imgLike.setImageResource(R.drawable.heart)
+                holder.imgLike.setImageResource(R.drawable.ic_favorite)
             }
             holder.imgLike.setOnClickListener {
                 onClick?.invoke(post, isLikedByCurrentUser)
                 isLikedByCurrentUser = !isLikedByCurrentUser
                 if (isLikedByCurrentUser) {
 
-                    holder.imgLike.setImageResource(R.drawable.heartfilled)
+                    holder.imgLike.setImageResource(R.drawable.ic_favorite_red)
                     holder.imgLike.setColorFilter(ContextCompat.getColor(context, R.color.red));
                 } else {
-                    holder.imgLike.setImageResource(R.drawable.heart)
+                    holder.imgLike.setImageResource(R.drawable.ic_favorite)
                 }
             }
         }

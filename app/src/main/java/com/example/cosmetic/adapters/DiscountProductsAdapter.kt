@@ -13,7 +13,7 @@ import com.example.cosmetic.databinding.DiscountProductRvItemBinding
 import com.example.cosmetic.helper.getProductPrice
 
 class DiscountProductsAdapter : RecyclerView.Adapter<DiscountProductsAdapter.DiscountProductsViewHolder>() {
-    inner class DiscountProductsViewHolder(private val binding: DiscountProductRvItemBinding) :
+    inner class DiscountProductsViewHolder( val binding: DiscountProductRvItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(product: Product) {
             binding.apply{
@@ -60,11 +60,15 @@ class DiscountProductsAdapter : RecyclerView.Adapter<DiscountProductsAdapter.Dis
         holder.itemView.setOnClickListener {
             onClick?.invoke(product)
         }
+        holder.binding.imgFavorite.setOnClickListener {
+            onFavoriteClick?.invoke(product)
+        }
     }
 
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
     var onClick: ((Product) -> Unit)? = null
+    var onFavoriteClick: ((Product) -> Unit)? = null
 
 }
