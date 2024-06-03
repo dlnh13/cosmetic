@@ -1,6 +1,8 @@
 package com.example.cosmetic.fragments.shopping
 
 import android.app.AlertDialog
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.compose.material3.Snackbar
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -29,6 +34,7 @@ import com.example.cosmetic.viewmodel.OrderViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class BillingFragment : Fragment() {
@@ -40,6 +46,11 @@ class BillingFragment : Fragment() {
     private var products = emptyList<CartProduct>()
     private var totalPrice = 0f
     private var selectedAddress: Address? = null
+    private var coins = 0
+    private val perCoin = 1000
+    private var discountedPrice = 0f
+    private var usedCoins = 0
+
     private val orderViewModel by viewModels<OrderViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,12 +75,23 @@ class BillingFragment : Fragment() {
 
         setupBillingProductsRv()
         setupAddressRv()
+
+        val pinkColor = ColorStateList.valueOf(Color.parseColor("#FFC0CB"))
+        binding.switchCoin.thumbTintList = pinkColor
+        binding.icCoin.setColorFilter(ContextCompat.getColor(requireContext(), R.color.yellow));
+
+        lifecycleScope.launch {
+            coins = orderViewModel.getCoins()
+            binding.tvCoins.text = "Bạn đang có ${coins} xu"
+            binding.tvDiscountMoney.text = "[- ₫ ${coins * 1000}]"
+        }
         if (!args.payment) {
             binding.apply {
                 buttonPlaceOrder.visibility = View.INVISIBLE
                 totalBoxContainer.visibility = View.INVISIBLE
                 middleLine.visibility = View.INVISIBLE
                 bottomLine.visibility = View.INVISIBLE
+                linearCoins.visibility = View.INVISIBLE
             }
         }
         binding.imageAddAddress.setOnClickListener {
@@ -136,13 +158,28 @@ class BillingFragment : Fragment() {
             if (selectedAddress == null) {
                 Toast.makeText(
                     requireContext(),
-                    "Bạn chưa chọn địa chỉ giao hàng",
+                    "Bạn chưa chọn địa chỉ giao hàng!",
                     Toast.LENGTH_SHORT
                 )
                     .show()
                 return@setOnClickListener
             }
             showOrderConfirmationDialog()
+        }
+        binding.switchCoin.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                discountedPrice = totalPrice - perCoin * coins
+                if(discountedPrice < 0){
+                    discountedPrice = 0f
+                    usedCoins = (totalPrice / perCoin).toInt()
+                } else {
+                    usedCoins = coins
+                }
+                binding.tvTotalPrice.text = "₫ ${discountedPrice}"
+            } else {
+                usedCoins = 0
+                binding.tvTotalPrice.text = "₫ $totalPrice"
+            }
         }
     }
 
@@ -154,14 +191,18 @@ class BillingFragment : Fragment() {
                 dialog.dismiss()
             }
             setPositiveButton("Đặt hàng") { dialog, _ ->
+                val finalPrice = if (binding.switchCoin.isChecked) discountedPrice else totalPrice
                 val order = Order(
                     OrderStatus.Ordered.status,
-                    totalPrice,
+                    finalPrice,
                     products,
                     selectedAddress!!
                 )
-                orderViewModel.placeOrder(order)
+                orderViewModel.placeOrder(order,usedCoins)
                 dialog.dismiss()
+                val coinsReceived = (order.totalPrice / 10000).toInt()
+                showCoinDialog("Coin", "Bạn đã nhận được $coinsReceived xu")
+
             }
         }
         alertDialog.create()
@@ -180,5 +221,19 @@ class BillingFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
             adapter = billingProductsAdapter
         }
+    }
+    private fun showCoinDialog(title: String, message: String) {
+        val icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_coins)
+        icon?.let {
+            DrawableCompat.setTint(it, ContextCompat.getColor(requireContext(), R.color.yellow))
+        }
+        AlertDialog.Builder(requireContext()).apply {
+            setTitle(title)
+            setMessage(message)
+            setIcon(icon)
+            setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }
+        }.create().show()
     }
 }

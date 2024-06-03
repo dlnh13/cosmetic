@@ -29,9 +29,15 @@ class NotificationAdapter : RecyclerView.Adapter<NotificationAdapter.Notificatio
                         )
                     }% ! Mua ngay !"
                     val priceAfterOffer = product.offerPercentage.getProductPrice(product.price)
-                    tvDiscountPrice.text = " ${String.format("%.2f", priceAfterOffer)}"
+                    tvDiscountPrice.text = "₫ ${String.format("%.2f", priceAfterOffer)}"
                     tvPrice.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-                    tvPrice.text = " ${product.price}"
+                    tvPrice.text = " ₫ ${product.price}"
+                    tvSale.text = "${
+                        String.format(
+                            "%.0f",
+                            product.offerPercentage!! * 100
+                        )
+                    }%"
                 } else {
                     // Show loading or placeholder state
                     tvNotiContent.text = "Loading..."

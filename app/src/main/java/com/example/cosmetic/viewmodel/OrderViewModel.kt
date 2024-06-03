@@ -7,10 +7,12 @@ import com.example.cosmetic.data.order.Order
 import com.example.cosmetic.util.Resource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,7 +22,7 @@ class OrderViewModel @Inject constructor(
 ) : ViewModel() {
     private val _order = MutableStateFlow<Resource<Order>>(Resource.Unspecified())
     val order = _order.asStateFlow()
-    fun placeOrder(order: Order) {
+    fun placeOrder(order: Order,usedCoin: Int) {
         viewModelScope.launch { _order.emit(Resource.Loading()) }
         firestore.runBatch { batch ->
 //            TODO: Add orders into user-orders collection
@@ -49,16 +51,46 @@ class OrderViewModel @Inject constructor(
                     }
             }
         }
-        .addOnSuccessListener {
-            viewModelScope.launch {
-                _order.emit(Resource.Success(order))
+            .addOnSuccessListener {
+                addCoin(order, usedCoin )
+                viewModelScope.launch {
+                    _order.emit(Resource.Success(order))
+                }
             }
-        }
             .addOnFailureListener {
                 viewModelScope.launch {
                     _order.emit(Resource.Error(it.message.toString()))
                 }
             }
+    }
+    fun addCoin(order: Order,usedCoin: Int) {
+        val coin = (order.totalPrice / 10000).toInt()
+        val userDocRef = firestore.collection("user").document(auth.uid!!)
+        userDocRef.get().addOnSuccessListener { documentSnapshot ->
+            if (documentSnapshot.exists()) {
+                val currentCoins = documentSnapshot.getLong("coins") ?: 0 // Lấy điểm số hiện tại, nếu không tồn tại thì lấy giá trị mặc định là 0
+                val newCoins = maxOf(currentCoins.toInt() + coin - usedCoin,0)
+
+                val data = hashMapOf("coins" to newCoins)
+
+                userDocRef.set(data, SetOptions.merge())
+
+            } else {
+                println("Không tìm thấy thông tin người dùng trong Firestore")
+            }
+        }.addOnFailureListener { e ->
+            // Xử lý khi gặp lỗi
+            println("Lỗi khi truy vấn thông tin người dùng: $e")
+        }
+    }
+    suspend fun getCoins(): Int {
+        return try {
+            val documentSnapshot = firestore.collection("user").document(auth.uid!!).get().await()
+            val coins = documentSnapshot.getLong("coins")?.toInt() ?: 0
+            coins
+        } catch (e: Exception) {
+            0
+        }
     }
 }
 

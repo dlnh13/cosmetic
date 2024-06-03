@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -19,14 +21,20 @@ import com.example.cosmetic.data.User
 import com.example.cosmetic.databinding.FragmentProfileBinding
 import com.example.cosmetic.util.Resource
 import com.example.cosmetic.util.showBottomNavigationView
+import com.example.cosmetic.viewmodel.CartViewModel
+import com.example.cosmetic.viewmodel.OrderViewModel
 import com.example.cosmetic.viewmodel.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private lateinit var binding: FragmentProfileBinding
     val viewModel by viewModels<ProfileViewModel>()
+    private val orderViewModel by viewModels<OrderViewModel>()
+    private var coins = 0
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,6 +46,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        lifecycleScope.launchWhenStarted {
+            coins = orderViewModel.getCoins()
+            binding.tvCoin.text = "${coins} xu"
+        }
+        binding.icCoin.setColorFilter(ContextCompat.getColor(requireContext(), R.color.yellow));
         lifecycleScope.launchWhenStarted {
             viewModel.user.collectLatest {
                 when (it) {
