@@ -12,13 +12,17 @@ import androidx.navigation.fragment.findNavController
 import com.example.cosmetic.R
 import com.example.cosmetic.data.User
 import com.example.cosmetic.databinding.FragmentRegisterBinding
+import com.example.cosmetic.util.RegisterValidation
 import com.example.cosmetic.util.Resource
 import com.example.cosmetic.viewmodel.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 private val TAG = "RegisterFragment"
+
 @AndroidEntryPoint
-class RegisterFragment:Fragment(R.layout.fragment_register) {
+class RegisterFragment : Fragment(R.layout.fragment_register) {
 
     private lateinit var binding: FragmentRegisterBinding
     private val viewModel by viewModels<RegisterViewModel>()
@@ -57,19 +61,40 @@ class RegisterFragment:Fragment(R.layout.fragment_register) {
                     is Resource.Loading -> {
                         binding.buttonRegister.startAnimation()
                     }
+
                     is Resource.Success -> {
                         binding.buttonRegister.revertAnimation()
                     }
+
                     is Resource.Error -> {
-                        Log.e(TAG,it.message.toString())
+                        Log.e(TAG, it.message.toString())
                         binding.buttonRegister.revertAnimation()
                     }
+
                     else -> Unit
                 }
             }
         }
+        lifecycleScope.launchWhenStarted {
+            viewModel.validation.collect { validation ->
+                if (validation.email is RegisterValidation.Failed) {
+                    withContext(Dispatchers.Main) {
+                        binding.edEmail.apply {
+                            requestFocus()
+                            error = validation.email.message
+                        }
+                    }
+                }
 
+                if (validation.password is RegisterValidation.Failed) {
+                    withContext(Dispatchers.Main) {
+                        binding.edPass.apply {
+                            requestFocus()
+                            error = validation.password.message
+                        }
+                    }
+                }
             }
-
-
+        }
+    }
 }

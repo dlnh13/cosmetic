@@ -13,8 +13,10 @@ import androidx.navigation.fragment.findNavController
 import com.example.cosmetic.R
 import com.example.cosmetic.activities.ShoppingActivity
 import com.example.cosmetic.databinding.FragmentLoginBinding
+import com.example.cosmetic.dialog.setupBottomSheetDialog
 import com.example.cosmetic.util.Resource
 import com.example.cosmetic.viewmodel.LoginViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -42,10 +44,34 @@ class LoginFragment:Fragment(R.layout.fragment_login) {
             buttonLogin.setOnClickListener {
                 val email = edEmail.text.toString().trim()
                 val password = edPass.text.toString()
+                if(email == "" || password == "" ){
+                    Toast.makeText(requireContext(),"Không được để trống thông tin",Toast.LENGTH_LONG).show()
+                    return@setOnClickListener
+                }
                 viewModel.login(email, password)
             }
         }
+        binding.tvForgotPass.setOnClickListener {
+            setupBottomSheetDialog { email ->
+                viewModel.resetPassword(email)
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            viewModel.resetPassword.collect{
+                when (it) {
+                    is Resource.Loading -> {
+                    }
+                    is Resource.Success -> {
+                        Snackbar.make(requireView(),"Reset link was sent to your email", Snackbar.LENGTH_LONG).show()
+                    }
+                    is Resource.Error -> {
+                        Snackbar.make(requireView(),"Error: ${it.message}", Snackbar.LENGTH_LONG).show()
+                    }
+                    else -> Unit
 
+                }
+            }
+        }
         lifecycleScope.launchWhenStarted {
             viewModel.login.collect {
                 when (it) {
