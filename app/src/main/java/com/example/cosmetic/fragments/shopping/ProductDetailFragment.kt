@@ -1,10 +1,13 @@
 package com.example.cosmetic.fragments.shopping
 
+import android.nfc.Tag
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +23,7 @@ import com.example.cosmetic.databinding.FragmentProductDetailBinding
 import com.example.cosmetic.util.Resource
 import com.example.cosmetic.util.hideBottomNavigationView
 import com.example.cosmetic.viewmodel.DetailsViewModel
+import com.example.cosmetic.viewmodel.NotificationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -34,7 +38,9 @@ class ProductDetailFragment : Fragment() {
     private var selectedColor: String? = null
     private var selectedSize: String? = null
     private val viewModel by viewModels<DetailsViewModel>()
-
+    private val notificationViewModel by viewModels<NotificationViewModel>()
+    private var isLiked = true
+    private var productId: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,7 +56,15 @@ class ProductDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val product = args.product
-
+        productId = product.id
+        lifecycleScope.launchWhenStarted {
+            notificationViewModel.favoriteProducts.collectLatest { favoriteProducts ->
+                if (favoriteProducts.contains(product.id)) {
+                    binding.icFavorite.setImageResource(R.drawable.ic_favorite_red)
+                    binding.icFavorite.tag = "liked"
+                }
+            }
+        }
         setupSizesRv()
         setupColorsRv()
         setupViewpager()
@@ -63,9 +77,8 @@ class ProductDetailFragment : Fragment() {
         colorsAdapter.onItemClick = {
             selectedColor = it
         }
-        binding.buttonAddToCart.setOnClickListener{
-            viewModel.addUpdateProductInCart(CartProduct(product,1,selectedColor,selectedSize))
-
+        binding.buttonAddToCart.setOnClickListener {
+            viewModel.addUpdateProductInCart(CartProduct(product, 1, selectedColor, selectedSize))
         }
         binding.apply {
             tvProductName.text = product.name
@@ -80,18 +93,21 @@ class ProductDetailFragment : Fragment() {
             }
             lifecycleScope.launchWhenStarted {
                 viewModel.addToCart.collectLatest {
-                    when (it){
-                        is Resource.Loading ->{
+                    when (it) {
+                        is Resource.Loading -> {
                             binding.buttonAddToCart.startAnimation()
                         }
+
                         is Resource.Success -> {
                             binding.buttonAddToCart.revertAnimation()
                             binding.buttonAddToCart.setBackgroundColor(resources.getColor(R.color.black))
                         }
-                        is Resource.Error ->{
+
+                        is Resource.Error -> {
                             binding.buttonAddToCart.stopAnimation()
-                            Toast.makeText(requireContext(),it.message,Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
                         }
+
                         else -> Unit
                     }
                 }
@@ -101,7 +117,21 @@ class ProductDetailFragment : Fragment() {
         viewPagerAdapter.differ.submitList(product.images)
         product.colors?.let { colorsAdapter.differ.submitList(it) }
         product.sizes?.let { sizesAdapter.differ.submitList(it) }
+        binding.icFavorite.setOnClickListener {
+            if (binding.icFavorite.tag == "liked") {
+                binding.icFavorite.tag = "notlike"
+                binding.icFavorite.setImageResource(R.drawable.ic_favorite)
+                isLiked = false
 
+            } else {
+                binding.icFavorite.tag = "liked"
+                binding.icFavorite.setImageResource(R.drawable.ic_favorite_red)
+
+                isLiked = true
+            }
+            notificationViewModel.updateFavoriteProducts(productId, isLiked)
+
+        }
     }
 
     private fun setupViewpager() {

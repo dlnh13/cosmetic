@@ -65,8 +65,17 @@ class NotificationFragment : Fragment(){
 
                     is Resource.Error -> {
                         binding.progressbarNoti.visibility = View.GONE
-                        Toast.makeText(requireContext(), "Error ${it.message}", Toast.LENGTH_SHORT)
-                            .show()
+                        if (it.message == "don't have favorite products found") {
+                            binding.linearEmpty.visibility = View.VISIBLE
+                            binding.rvNotifications.visibility = View.GONE
+                        } else {
+                            Toast.makeText(
+                                requireContext(),
+                                "Error ${it.message}",
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        }
                     }
 
                     else -> Unit

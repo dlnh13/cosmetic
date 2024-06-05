@@ -69,7 +69,7 @@
         app:layout_constraintStart_toStartOf="@id/icNoti"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/icNoti"
-        tools:listitem="@layout/noti_item"
+        tools:listitem="@layout/favorite_product_item_rv"
         android:visibility="visible"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,6 +13,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,19 +22,23 @@ import javax.inject.Inject
 class NotificationViewModel @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val auth: FirebaseAuth
-    ) : ViewModel() {
-    private val _notifications  = MutableStateFlow<Resource<List<Notification>>>(Resource.Unspecified())
+) : ViewModel() {
+    private val _notifications =
+        MutableStateFlow<Resource<List<Notification>>>(Resource.Unspecified())
     val notifications = _notifications.asStateFlow()
-    val favoriteProducts = mutableListOf<String>()
     private var notificationDocuments = emptyList<DocumentSnapshot>()
-init {
-    getUserFavoriteProductsId()
-}
-    private fun getUserFavoriteProductsId(){
+    private val _favoriteProducts = MutableStateFlow<List<String>>(emptyList())
+    val favoriteProducts: StateFlow<List<String>> = _favoriteProducts
+
+    init {
+        getUserFavoriteProductsId()
+    }
+
+    private fun getUserFavoriteProductsId() {
         firestore.collection("user").document(auth.uid!!).collection("favoriteProducts").get()
             .addOnSuccessListener { documents ->
                 val favoriteProducts = documents.map { it.id }
-                Log.d("favoriteProducts", "${favoriteProducts.toString()}")
+                _favoriteProducts.value = favoriteProducts
                 fetchNotifications(favoriteProducts)
             }
             .addOnFailureListener { exception ->
@@ -41,18 +46,19 @@ init {
             }
     }
 
+
     private fun fetchNotifications(favoriteProducts: List<String>) {
         viewModelScope.launch {
             _notifications.emit((Resource.Loading()))
         }
         if (favoriteProducts.isEmpty()) {
             viewModelScope.launch {
-                _notifications.emit(Resource.Error("No favorite products found"))
+                _notifications.emit(Resource.Error("don't have favorite products found"))
             }
             return
         }
         firestore.collection("Notification").whereIn("productId", favoriteProducts)
-            .addSnapshotListener{ value, error ->
+            .addSnapshotListener { value, error ->
                 if (error != null)
                     viewModelScope.launch { _notifications.emit(Resource.Error(error.message.toString())) }
                 else {
@@ -60,10 +66,19 @@ init {
                     val notifications = value.toObjects(Notification::class.java)
                     viewModelScope.launch { _notifications.emit(Resource.Success(notifications)) }
                 }
-
             }
-
-
     }
+
+    fun updateFavoriteProducts(productId: String, liked: Boolean) {
+        val docRef =
+            firestore.collection("user").document(auth.uid!!).collection("favoriteProducts")
+                .document(productId)
+        if (liked) {
+            docRef.set(mapOf("liked" to "true"))
+        } else {
+            docRef.delete()
+        }
+    }
+
 
 }

@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -21,12 +20,10 @@ import com.example.cosmetic.data.User
 import com.example.cosmetic.databinding.FragmentProfileBinding
 import com.example.cosmetic.util.Resource
 import com.example.cosmetic.util.showBottomNavigationView
-import com.example.cosmetic.viewmodel.CartViewModel
 import com.example.cosmetic.viewmodel.OrderViewModel
 import com.example.cosmetic.viewmodel.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
@@ -75,8 +72,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         binding.linearAllOrders.setOnClickListener {
             findNavController().navigate(R.id.action_profileFragment_to_allOrdersFragment)
         }
-        binding.linearNotifications.setOnClickListener{
-            findNavController().navigate(R.id.action_profileFragment_to_notificationFragment)
+        binding.linearFavorite.setOnClickListener{
+            findNavController().navigate(R.id.action_profileFragment_to_listFavFragment)
         }
         binding.linearAddress.setOnClickListener {
             val action = ProfileFragmentDirections.actionProfileFragmentToBillingFragment(

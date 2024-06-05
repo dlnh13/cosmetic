@@ -57,5 +57,8 @@ class HomeFragment:Fragment(R.layout.fragment_home) {
         binding.btnMess.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_chatFragment)
         }
+        binding.imgNotification.setOnClickListener{
+            findNavController().navigate(R.id.action_homeFragment_to_notificationFragment)
+        }
     }
 }

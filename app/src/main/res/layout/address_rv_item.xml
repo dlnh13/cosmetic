@@ -12,7 +12,7 @@
         android:fontFamily="@font/poppins_thin"
         android:text="Home"
         android:textAllCaps="false"
-        android:textColor="@color/g_blue_gray200"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
