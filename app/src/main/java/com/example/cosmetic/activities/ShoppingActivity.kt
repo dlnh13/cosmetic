@@ -1,8 +1,7 @@
 package com.example.cosmetic.activities
 
-import android.content.ContentValues.TAG
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -13,9 +12,8 @@ import com.example.cosmetic.R
 import com.example.cosmetic.databinding.ActivityShoppingBinding
 import com.example.cosmetic.util.Resource
 import com.example.cosmetic.viewmodel.CartViewModel
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -24,14 +22,31 @@ class ShoppingActivity : AppCompatActivity() {
     val binding by lazy {
         ActivityShoppingBinding.inflate(layoutInflater)
     }
-    val viewModel by viewModels<CartViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         val navController = findNavController(R.id.shoppingHostFragment)
         binding.bottomNavigation.setupWithNavController(navController)
-
+        val auth = FirebaseAuth.getInstance()
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            if (item.itemId != R.id.homeFragment && auth.currentUser == null) {
+                Toast.makeText(
+                    applicationContext,
+                    "Chưa đăng nhập!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                startActivity(Intent(this, LoginRegisterActivity::class.java))
+                this.finish()
+                false
+            } else {
+                // Allow navigation to the selected fragment
+                navController.navigate(item.itemId)
+                true
+            }
+        }
+        if (auth.currentUser != null) {
+            val viewModel by viewModels<CartViewModel>()
         lifecycleScope.launchWhenStarted {
             viewModel.cartProducts.collectLatest {
                 when (it) {
@@ -46,6 +61,7 @@ class ShoppingActivity : AppCompatActivity() {
                     else -> Unit
                 }
             }
+        }
         }
     }
 }

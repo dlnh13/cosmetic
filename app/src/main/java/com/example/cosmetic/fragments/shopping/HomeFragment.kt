@@ -1,5 +1,6 @@
 package com.example.cosmetic.fragments.shopping
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cosmetic.R
+import com.example.cosmetic.activities.LoginRegisterActivity
 import com.example.cosmetic.adapters.HomeViewpagerAdapter
 import com.example.cosmetic.adapters.SpecialProductAdapter
 import com.example.cosmetic.databinding.FragmentHomeBinding
@@ -23,10 +25,12 @@ import com.example.cosmetic.fragments.categories.MakeuptoolFragment
 import com.example.cosmetic.fragments.categories.PerfumeFragment
 import com.example.cosmetic.fragments.categories.SkinCareFragment
 import com.example.cosmetic.util.Resource
+import com.example.cosmetic.util.Uid.checkAuth
 import com.example.cosmetic.util.VerticalItemDecoration
 import com.example.cosmetic.viewmodel.NotificationViewModel
 import com.example.cosmetic.viewmodel.SearchViewModel
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import org.checkerframework.checker.units.qual.s
@@ -36,6 +40,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var searchProductsAdapter: SpecialProductAdapter
     private val viewModel by viewModels<SearchViewModel>()
+    private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,7 +62,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             PerfumeFragment()
         )
         setupSearchRv()
+        if (auth.currentUser == null) {
+            binding.btnMess.visibility = View.GONE
+            binding.imgNotification.visibility = View.GONE
 
+        }
         lifecycleScope.launchWhenStarted {
             viewModel.searchResults.collectLatest {
                 when (it) {
@@ -99,9 +108,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }.attach()
 
         binding.btnMess.setOnClickListener {
+            checkAuth(requireActivity())
             findNavController().navigate(R.id.action_homeFragment_to_chatFragment)
         }
         binding.imgNotification.setOnClickListener {
+            checkAuth(requireActivity())
             findNavController().navigate(R.id.action_homeFragment_to_notificationFragment)
         }
 

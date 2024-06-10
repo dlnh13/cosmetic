@@ -21,9 +21,11 @@ import com.example.cosmetic.adapters.ViewPager2Images
 import com.example.cosmetic.data.CartProduct
 import com.example.cosmetic.databinding.FragmentProductDetailBinding
 import com.example.cosmetic.util.Resource
+import com.example.cosmetic.util.Uid.checkAuth
 import com.example.cosmetic.util.hideBottomNavigationView
 import com.example.cosmetic.viewmodel.DetailsViewModel
 import com.example.cosmetic.viewmodel.NotificationViewModel
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -37,11 +39,18 @@ class ProductDetailFragment : Fragment() {
     private val colorsAdapter by lazy { ColorsAdapter() }
     private var selectedColor: String? = null
     private var selectedSize: String? = null
-    private val viewModel by viewModels<DetailsViewModel>()
-    private val notificationViewModel by viewModels<NotificationViewModel>()
     private var isLiked = true
     private var productId: String = ""
+    private val auth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
 
+    private var detailsViewModel : DetailsViewModel? = null
+    private var notificationViewModel: NotificationViewModel? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+            if (auth.currentUser != null)
+                  detailsViewModel = viewModels<DetailsViewModel>().value
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,13 +66,19 @@ class ProductDetailFragment : Fragment() {
 
         val product = args.product
         productId = product.id
-        lifecycleScope.launchWhenStarted {
-            notificationViewModel.favoriteProducts.collectLatest { favoriteProducts ->
-                if (favoriteProducts.contains(product.id)) {
-                    binding.icFavorite.setImageResource(R.drawable.ic_favorite_red)
-                    binding.icFavorite.tag = "liked"
+        if (auth.currentUser != null) {
+            notificationViewModel = viewModels<NotificationViewModel>().value
+            lifecycleScope.launchWhenStarted {
+                notificationViewModel!!.favoriteProducts.collectLatest { favoriteProducts ->
+                    if (favoriteProducts.contains(product.id)) {
+                        binding.icFavorite.setImageResource(R.drawable.ic_favorite_red)
+                        binding.icFavorite.tag = "liked"
+                    }
                 }
             }
+        }else {
+           // binding.buttonAddToCart.isEnabled = false
+            binding.icFavorite.visibility = View.GONE
         }
         setupSizesRv()
         setupColorsRv()
@@ -78,7 +93,18 @@ class ProductDetailFragment : Fragment() {
             selectedColor = it
         }
         binding.buttonAddToCart.setOnClickListener {
-            viewModel.addUpdateProductInCart(CartProduct(product, 1, selectedColor, selectedSize))
+            if(auth.currentUser == null) {
+                Toast.makeText(context, "Chưa login", Toast.LENGTH_SHORT).show()
+            } else {
+                detailsViewModel?.addUpdateProductInCart(
+                    CartProduct(
+                        product,
+                        1,
+                        selectedColor,
+                        selectedSize
+                    )
+                )
+            }
         }
         binding.apply {
             tvProductName.text = product.name
@@ -92,7 +118,7 @@ class ProductDetailFragment : Fragment() {
                 tvProductSize.visibility = View.INVISIBLE
             }
             lifecycleScope.launchWhenStarted {
-                viewModel.addToCart.collectLatest {
+                detailsViewModel?.addToCart?.collectLatest {
                     when (it) {
                         is Resource.Loading -> {
                             binding.buttonAddToCart.startAnimation()
@@ -129,7 +155,7 @@ class ProductDetailFragment : Fragment() {
 
                 isLiked = true
             }
-            notificationViewModel.updateFavoriteProducts(productId, isLiked)
+            notificationViewModel!!.updateFavoriteProducts(productId, isLiked)
 
         }
     }
