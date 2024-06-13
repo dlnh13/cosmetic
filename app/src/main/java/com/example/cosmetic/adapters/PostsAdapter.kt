@@ -1,34 +1,24 @@
 package com.example.cosmetic.adapters
 
-import android.content.res.ColorStateList
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.util.Log
-import android.view.GestureDetector
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
-import com.bumptech.glide.Glide.init
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.cosmetic.R
-import com.example.cosmetic.data.Address
-import com.example.cosmetic.data.CartProduct
 import com.example.cosmetic.data.Post
-import com.example.cosmetic.databinding.ColorRvItemBinding
-import com.example.cosmetic.databinding.FeedItemBinding
-import com.example.cosmetic.helper.getProductPrice
-import com.example.cosmetic.util.Uid
 import com.example.cosmetic.util.Uid.getUid
 import com.example.cosmetic.util.Uid.getUserName
 import kotlinx.coroutines.MainScope
@@ -47,6 +37,7 @@ class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostsViewHolder>() {
         val tvName: TextView = itemView.findViewById(R.id.tvName)
         val tvTime: TextView = itemView.findViewById(R.id.tvTime)
         val tvCaption: TextView = itemView.findViewById(R.id.tvCaption)
+        val tvHashtag: TextView = itemView.findViewById(R.id.tvHashtag)
         val tvLikes: TextView = itemView.findViewById(R.id.tvLikes)
         val viewPagerPostImages: ViewPager2 = itemView.findViewById(R.id.viewPagerPostImages)
         val imgProfile: ImageView = itemView.findViewById(R.id.imgProfile)
@@ -57,6 +48,35 @@ class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostsViewHolder>() {
                 // Gán adapter và dữ liệu mới cho ViewPager2
                 viewPagerPostImages.adapter = viewPagerAdapter
                 viewPagerAdapter.differ.submitList(post.imagePost)
+            }
+            // Process and display hashtags
+            val hashtags = post.hashtag?.joinToString(" ") { "#$it" }.orEmpty()
+            if(hashtags == ""){
+                tvHashtag.visibility = View.GONE
+            }else {
+                val spannableString = SpannableString(hashtags)
+                post.hashtag?.forEach { hashtag ->
+                    val formattedHashtag = "#$hashtag"
+                    val start = hashtags.indexOf(formattedHashtag)
+                    if (start != -1) {
+                        val end = start + formattedHashtag.length
+                        spannableString.setSpan(object : ClickableSpan() {
+                            override fun onClick(widget: View) {
+                                onHashtagClick?.invoke(hashtag)
+                            }
+
+                            override fun updateDrawState(ds: TextPaint) {
+                                super.updateDrawState(ds)
+                                ds.color = ContextCompat.getColor(itemView.context, R.color.g_blue)
+                                ds.isUnderlineText = false
+                            }
+                        }, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    }
+                }
+
+                // Assign processed hashtags to TextView
+                tvHashtag.text = spannableString
+                tvHashtag.movementMethod = LinkMovementMethod.getInstance()
             }
         }
     }
@@ -130,11 +150,13 @@ class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostsViewHolder>() {
 
     var onClick: ((Post, Boolean) -> Unit)? = null
     var onComment: ((Post) -> Unit)? = null
+    var onHashtagClick: ((String) -> Unit)? = null
 
     fun clear() {
         coroutineScope.cancel()
     }
 }
+
 
 
 

@@ -2,11 +2,8 @@ package com.example.cosmetic.fragments.blog
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,29 +11,19 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
-import com.bumptech.glide.Glide
-import com.example.cosmetic.R
+import androidx.navigation.fragment.findNavController
 import com.example.cosmetic.adapters.ViewPager2Images
 import com.example.cosmetic.data.Post
-import com.example.cosmetic.data.User
 import com.example.cosmetic.databinding.FragmentCreatePostBinding
 import com.example.cosmetic.util.Resource
 import com.example.cosmetic.util.Uid.getUid
 import com.example.cosmetic.util.getTime
 import com.example.cosmetic.viewmodel.CreatePostViewModel
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import java.io.ByteArrayOutputStream
-import java.util.ArrayList
 import java.util.UUID
 
 @AndroidEntryPoint
@@ -44,10 +31,9 @@ class CreatePostFragment : Fragment() {
     private lateinit var binding: FragmentCreatePostBinding
     private val viewModel by viewModels<CreatePostViewModel>()
     private lateinit var imageActivityResultLauncher: ActivityResultLauncher<Intent>
-
     // private lateinit var cameraActivityResultLauncher: ActivityResultLauncher<Intent>
-    var selectedImages = mutableListOf<Uri>()
-    var displayImages = mutableListOf<String>()
+    private var selectedImages = mutableListOf<Uri>()
+    private var displayImages = mutableListOf<String>()
     private val viewPagerAdapter by lazy { ViewPager2Images() }
 
 
@@ -124,6 +110,27 @@ class CreatePostFragment : Fragment() {
                 viewModel.uploadPost(post, selectedImages)
             }
         }
+        lifecycleScope.launchWhenStarted {
+            viewModel.post.collectLatest {
+                when (it) {
+                    is Resource.Loading -> {
+                        binding.progressbarCreatePost.visibility = View.VISIBLE
+                    }
+
+                    is Resource.Success -> {
+                        findNavController().navigateUp()
+                    }
+
+                    is Resource.Error -> {
+                        binding.progressbarCreatePost.visibility = View.INVISIBLE
+                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                    }
+
+                    else -> Unit
+                }
+            }
+        }
+
     }
 
     private fun addImageDialog() {

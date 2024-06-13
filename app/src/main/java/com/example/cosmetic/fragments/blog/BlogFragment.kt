@@ -16,7 +16,6 @@ import com.example.cosmetic.databinding.FragmentBlogBinding
 import com.example.cosmetic.util.Resource
 import com.example.cosmetic.viewmodel.BlogViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
@@ -62,7 +61,6 @@ class BlogFragment : Fragment(R.layout.fragment_blog) {
         binding.btnAdd.setOnClickListener {
             findNavController().navigate(R.id.action_blogFragment_to_createPostFragment)
         }
-//        setupPostRv()
         postsAdapter.onClick = { post, isLiked ->
             viewModel.likeClicked(post, isLiked)
         }
@@ -70,7 +68,14 @@ class BlogFragment : Fragment(R.layout.fragment_blog) {
         postsAdapter.onComment = {
             val action = BlogFragmentDirections.actionBlogFragmentToCommentFragment(it)
             findNavController().navigate(action)
-            //  findNavController().navigate(R.id.action_blogFragment_to_commentFragment)
+        }
+        postsAdapter.onHashtagClick = {hashtag ->
+            val action = BlogFragmentDirections.actionBlogFragmentToSearchHashtagFragment(hashtag)
+            findNavController().navigate(action)
+        }
+        binding.btnSearch.setOnClickListener {
+            val action = BlogFragmentDirections.actionBlogFragmentToSearchHashtagFragment(null)
+            findNavController().navigate(action)
         }
     }
 

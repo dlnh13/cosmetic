@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_blogFragment_to_commentFragment"
             app:destination="@id/commentFragment" />
+        <action
+            android:id="@+id/action_blogFragment_to_searchHashtagFragment"
+            app:destination="@id/searchHashtagFragment" />
     </fragment>
     <fragment
         android:id="@+id/cartFragment"
@@ -146,5 +149,17 @@
         <action
             android:id="@+id/action_listFavFragment_to_productDetailFragment"
             app:destination="@id/productDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchHashtagFragment"
+        android:name="com.example.cosmetic.fragments.blog.SearchHashtagFragment"
+        android:label="SearchHashtagFragment" >
+        <action
+            android:id="@+id/action_searchHashtagFragment_to_commentFragment"
+            app:destination="@id/commentFragment" />
+        <argument
+            android:name="hashtag"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 </navigation>
