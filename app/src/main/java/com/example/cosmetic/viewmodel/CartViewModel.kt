@@ -33,15 +33,6 @@ class CartViewModel @Inject constructor(
         MutableStateFlow<Resource<List<CartProduct>>>(Resource.Unspecified())
     val cartProducts = _cartProducts.asStateFlow()
 
-
-//    val selectedProducts = mutableListOf<CartProduct>()
-
-//    MutableStateFlow<Resource<List<CartProduct>>>(Resource.Unspecified())
-    //val selectedProducts = _selectedProducts.asStateFlow()
-//    viewModelScope.launch {
-//        cartProducts.collect { resource ->
-//            Log.d("YourViewModel", "Cart products: ${resource.data!!.filter {!it.selected  }}")
-//        }}
     val productsPrice = cartProducts.map {
         when (it) {
             is Resource.Success -> {
@@ -57,11 +48,6 @@ class CartViewModel @Inject constructor(
         }.toFloat()
         }
 
-
-
-//        fun totalPrice(data:List<CartProduct>){
-//                CartProduct
-//    }
     private fun calculatePrice(data: List<CartProduct>): Float {
         return data.sumByDouble { cartProduct ->
             (cartProduct.product.offerPercentage.getProductPrice(cartProduct.product.price) * cartProduct.quantity).toDouble()

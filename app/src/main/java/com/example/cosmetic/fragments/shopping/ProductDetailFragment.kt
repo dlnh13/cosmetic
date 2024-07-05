@@ -96,14 +96,20 @@ class ProductDetailFragment : Fragment() {
             if(auth.currentUser == null) {
                 Toast.makeText(context, "Chưa login", Toast.LENGTH_SHORT).show()
             } else {
-                detailsViewModel?.addUpdateProductInCart(
-                    CartProduct(
-                        product,
-                        1,
-                        selectedColor,
-                        selectedSize
+                if (product.colors != null && selectedColor == null) {
+                    Toast.makeText(context, "Vui lòng chọn màu sắc", Toast.LENGTH_SHORT).show()
+                } else if (product.sizes != null && selectedSize == null) {
+                    Toast.makeText(context, "Vui lòng chọn kích thước", Toast.LENGTH_SHORT).show()
+                } else {
+                    detailsViewModel?.addUpdateProductInCart(
+                        CartProduct(
+                            product,
+                            1,
+                            selectedColor,
+                            selectedSize
+                        )
                     )
-                )
+                }
             }
         }
         binding.apply {

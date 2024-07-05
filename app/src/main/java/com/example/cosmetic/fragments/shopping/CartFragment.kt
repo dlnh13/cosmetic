@@ -43,14 +43,14 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
         setupCartRv()
         var totalPrice = 0f
-        binding.tvTotalPrice.text = "$ $totalPrice"
+        binding.tvTotalPrice.text = "đ $totalPrice"
 
 
         lifecycleScope.launchWhenStarted {
             viewModel.productsPrice.collectLatest { price ->
                 price?.let {
                     totalPrice = 0f
-                    binding.tvTotalPrice.text = "$ $totalPrice"
+                    binding.tvTotalPrice.text = "đ $totalPrice"
                 }
             }
         }
@@ -71,7 +71,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
             val testsprice = viewModel.test(cartAdapter.differ.currentList.filter { it.selected }
             )
             totalPrice = testsprice
-            binding.tvTotalPrice.text = "$ $testsprice"
+            binding.tvTotalPrice.text = "đ $testsprice"
         }
         binding.buttonCheckout.setOnClickListener {
             val action = CartFragmentDirections.actionCartFragmentToBillingFragment(

@@ -35,9 +35,13 @@ class DetailsViewModel @Inject constructor(
                     if (it.isEmpty()) { // add new product
                         addNewProduct(cartProduct)
                     } else {
-                        val product = it.first().toObject(CartProduct::class.java)
-                        if (product == cartProduct) { // increase the quantity
-                            val documentId = it.first().id
+                        val existingProduct = it.first().toObject(CartProduct::class.java)
+                        val documentId = it.first().id
+                        if (
+                            existingProduct?.product?.id == cartProduct.product.id &&
+                            existingProduct?.selectedColor == cartProduct.selectedColor &&
+                            existingProduct?.selectedSize == cartProduct.selectedSize
+                        ) { // increase the quantity
                             increaseQuantity(documentId, cartProduct)
                         } else { // add new product
                             addNewProduct(cartProduct)
