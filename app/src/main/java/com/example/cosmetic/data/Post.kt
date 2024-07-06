@@ -8,7 +8,7 @@ data class Post
     (
     val postId: String  ,
     val imagePost: List<String>,
-    val time: String? = "",
+    val time: Long? = 0,
     val caption: String? = "",
     val hashtag: List<String>? = null,
     val likes: Int? = 0,
@@ -17,5 +17,5 @@ data class Post
     val likers: List<String>? = null
 ): Parcelable
 {
-    constructor() : this("", listOf(), "", "",null, 0, "", "", null)
+    constructor() : this("", listOf(), 0, "",null, 0, "", "", null)
 }

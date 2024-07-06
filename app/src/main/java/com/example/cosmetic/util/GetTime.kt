@@ -1,16 +1,14 @@
 package com.example.cosmetic.util
 
-import java.text.SimpleDateFormat
-import java.util.Date
-
-fun getTime(): String {
+fun getTime(): Long {
 
 
-    val formatter = SimpleDateFormat("HH:mm:ss")
-    val date: Date = Date(System.currentTimeMillis())
-    val stringdate = formatter.format(date)
-
-
-    return stringdate
+//    val formatter = SimpleDateFormat("HH:mm:ss")
+//    val date: Date = Date(System.currentTimeMillis())
+//    val stringdate = formatter.format(date)
+//
+//
+//    return stringdate
+    return   System.currentTimeMillis()
 
 }

@@ -65,8 +65,6 @@ class ChatViewModel @Inject constructor(
         friendname: String,
         message: String
     ) {
-        Log.d("???","$sender")
-
         val context = getApplication<CosmeticApplication>().applicationContext
         val hashMap = hashMapOf<String, Any>(
             "sender" to sender,
@@ -83,7 +81,7 @@ class ChatViewModel @Inject constructor(
         mysharedPrefs.setValue("chatroomid", uniqueId.toString())
         mysharedPrefs.setValue("friendname", friendnamesplit)
         firestore.collection("Messages").document(uniqueId.toString()).collection("chats")
-            .document(getTime()).set(hashMap).addOnCompleteListener { task ->
+            .document(getTime().toString()).set(hashMap).addOnCompleteListener { task ->
 
                 val setHashap = hashMapOf<String, Any>(
                     "friendid" to receiver,

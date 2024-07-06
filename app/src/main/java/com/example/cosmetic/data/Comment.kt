@@ -4,9 +4,9 @@ data class Comment(
     val commentId: String,
     val postId: String,
     val uid: String,
-    val time: String? = "",
+    val time: Long? = 0,
     val content: String,
     val profileImage: String? ="",
     ) {
-    constructor() : this("0","","","","","")
+    constructor() : this("0","","",0,"","")
 }

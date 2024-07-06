@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.cosmetic.R
 import com.example.cosmetic.data.Message
 import com.example.cosmetic.util.Uid.getUid
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class MessagesAdapter() : RecyclerView.Adapter<MessagesHolder>() {
 
@@ -45,11 +47,13 @@ class MessagesAdapter() : RecyclerView.Adapter<MessagesHolder>() {
 
     override fun onBindViewHolder(holder: MessagesHolder, position: Int) {
         val message = differ.currentList[position]
+        val formatter = SimpleDateFormat("HH:mm dd-MM")
+        //val date = Date(message.time!!)
         holder.messageText.visibility = View.VISIBLE
         holder.timeOfSent.visibility = View.VISIBLE
 
         holder.messageText.text = message.message
-        holder.timeOfSent.text = message.time?.substring(0, 5) ?: ""
+        holder.timeOfSent.text = formatter.format(message.time)
     }
 
     override fun getItemViewType(position: Int): Int {

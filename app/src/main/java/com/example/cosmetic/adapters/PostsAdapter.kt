@@ -24,6 +24,7 @@ import com.example.cosmetic.util.Uid.getUserName
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 
 class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostsViewHolder>() {
     private val coroutineScope = MainScope() // CoroutineScope tied to the main thread
@@ -105,6 +106,7 @@ class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostsViewHolder>() {
 
     override fun onBindViewHolder(holder: PostsViewHolder, position: Int) {
         val post = differ.currentList[position]
+        val formatter = SimpleDateFormat("HH:mm dd-MM-yyyy")
         holder.itemView.apply {
             holder.bind(post)
             var isLikedByCurrentUser: Boolean
@@ -116,7 +118,7 @@ class PostsAdapter : RecyclerView.Adapter<PostsAdapter.PostsViewHolder>() {
                 holder.tvName.text = getUserName(post.uid)
             }
             holder.tvLikes.text = "${post.likes} Likes"
-            holder.tvTime.text = post.time.toString()
+            holder.tvTime.text = formatter.format(post.time)
             holder.tvCaption.text = post.caption.toString()
             holder.btnComment.setOnClickListener {
                 onComment?.invoke(post)
