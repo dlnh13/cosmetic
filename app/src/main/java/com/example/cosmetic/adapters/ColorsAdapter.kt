@@ -15,29 +15,28 @@ class ColorsAdapter: RecyclerView.Adapter<ColorsAdapter.ColorsViewHolder>() {
 
     inner class ColorsViewHolder(private val binding: ColorRvItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(color: Int, position: Int) {
-            val imageDrawable = ColorDrawable(color)
-            binding.imageColor.setImageDrawable(imageDrawable)
+        fun bind(color: String, position: Int) {
+            binding.tvColor.text = color
             if (position == selectedPosition) { //Color is selected
                 binding.apply {
                     imageShadow.visibility = View.VISIBLE
-                    imagePicked.visibility = View.VISIBLE
+                    //imagePicked.visibility = View.VISIBLE
                 }
             } else { //Color is not selected
                 binding.apply {
                     imageShadow.visibility = View.INVISIBLE
-                    imagePicked.visibility = View.INVISIBLE
+                   // imagePicked.visibility = View.INVISIBLE
                 }
             }
         }
     }
 
-    private val diffCallback = object : DiffUtil.ItemCallback<Int>() {
-        override fun areItemsTheSame(oldItem: Int, newItem: Int): Boolean {
+    private val diffCallback = object : DiffUtil.ItemCallback<String>() {
+        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
             return oldItem == newItem
         }
 
-        override fun areContentsTheSame(oldItem: Int, newItem: Int): Boolean {
+        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
             return oldItem == newItem
         }
     }
@@ -69,6 +68,6 @@ class ColorsAdapter: RecyclerView.Adapter<ColorsAdapter.ColorsViewHolder>() {
         return differ.currentList.size
     }
 
-    var onItemClick: ((Int) -> Unit)? = null
+    var onItemClick: ((String) -> Unit)? = null
 
 }
