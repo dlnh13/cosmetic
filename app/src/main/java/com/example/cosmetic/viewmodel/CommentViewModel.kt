@@ -42,38 +42,11 @@ class CommentViewModel @Inject constructor(
                 else {
                     commentsDocuments = value.documents
                     val comments = value.toObjects(Comment::class.java)
-                    viewModelScope.launch { _comments.emit(Resource.Success(comments)) }
+                    val sortedComments = comments.sortedBy { it.time }
+                    viewModelScope.launch { _comments.emit(Resource.Success(sortedComments)) }
                 }
             }
-//        firestore.collection("Posts").document(post.postId).collection("comments")
-//            .orderBy("time", Query.Direction.DESCENDING)
-//            .addSnapshotListener { value, error ->
-//                if (error != null) {
-//                    viewModelScope.launch { _comments.emit(Resource.Error(error?.message.toString())) }
-//                    return@addSnapshotListener
-//                } else {
-//                    val postsList = mutableListOf<Post>()
-//                    value!!.documents.forEach { document ->
-//                        val postModal = document.toObject(Post::class.java)
-//                        postModal.let {
-//                            postsList.add(it!!)
-//                        }
-//                    }
-//                    viewModelScope.launch {
-//                        _posts.emit(Resource.Success(postsList))
-//                    }
-//                }
-//            }
     }
-
-//    fun getImgProfilePath(): String {
-//        firestore.collection("user").document(auth.uid!!).get()
-//            .addOnSuccessListener {
-//                val user = it.toObject(User::class.java)
-//                imagePath = user!!.imagePath
-//            }
-//        return imagePath
-//    }
 
     fun saveComment(comment: Comment) {
         val areInputsValid = comment.content.trim().isNotEmpty()
@@ -83,9 +56,6 @@ class CommentViewModel @Inject constructor(
             }
             return
         }
-//        viewModelScope.launch {
-//            _comment.emit(Resource.Loading())
-//        }
         firestore.runTransaction { transaction ->
             val documentRef =
                 firestore.collection("Posts").document(comment.postId).collection("comments")

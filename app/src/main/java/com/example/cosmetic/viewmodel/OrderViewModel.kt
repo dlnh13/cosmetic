@@ -25,20 +25,17 @@ class OrderViewModel @Inject constructor(
     fun placeOrder(order: Order,usedCoin: Int) {
         viewModelScope.launch { _order.emit(Resource.Loading()) }
         firestore.runBatch { batch ->
-//            TODO: Add orders into user-orders collection
-//            TODO:Add orders into orders collection
-//            TODO:Delete products from user-cart collection
             firestore.collection("user")
                 .document(auth.uid!!)
                 .collection("orders")
-                .document()
+                .document(order.orderId.toString())
                 .set(order)
-            firestore.collection("orders").document().set(order)
+            firestore.collection("orders").document(order.orderId.toString()).set(order)
 
             val selectedProducts = order.products.filter { it.selected }
             selectedProducts.forEach { cartProduct ->
                 val productId =
-                    cartProduct.product.id // Giả sử ID của sản phẩm được lưu trữ trong thuộc tính id của cartProduct
+                    cartProduct.product.id
                 firestore.collection("user").document(auth.uid!!).collection("cart")
                     .whereEqualTo("product.id", productId)
                     .whereEqualTo("selectedColor", cartProduct.selectedColor)
@@ -79,7 +76,6 @@ class OrderViewModel @Inject constructor(
                 println("Không tìm thấy thông tin người dùng trong Firestore")
             }
         }.addOnFailureListener { e ->
-            // Xử lý khi gặp lỗi
             println("Lỗi khi truy vấn thông tin người dùng: $e")
         }
     }
@@ -93,5 +89,6 @@ class OrderViewModel @Inject constructor(
         }
     }
 }
+
 
 

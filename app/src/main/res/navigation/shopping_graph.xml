@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.cosmetic.fragments.shopping.HomeFragment"
+        android:name="com.example.cosmetic.view.fragments.shopping.HomeFragment"
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_productDetailFragment"
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/blogFragment"
-        android:name="com.example.cosmetic.fragments.blog.BlogFragment"
+        android:name="com.example.cosmetic.view.fragments.blog.BlogFragment"
         android:label="BlogFragment" >
         <action
             android:id="@+id/action_blogFragment_to_createPostFragment"
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/cartFragment"
-        android:name="com.example.cosmetic.fragments.shopping.CartFragment"
+        android:name="com.example.cosmetic.view.fragments.shopping.CartFragment"
         android:label="CartFragment" >
         <action
             android:id="@+id/action_cartFragment_to_productDetailFragment"
@@ -45,7 +45,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.cosmetic.fragments.settings.ProfileFragment"
+        android:name="com.example.cosmetic.view.fragments.settings.ProfileFragment"
         android:label="ProfileFragment" >
         <action
             android:id="@+id/action_profileFragment_to_addressFragment"
@@ -65,7 +65,7 @@
     </fragment>
     <fragment
         android:id="@+id/productDetailFragment"
-        android:name="com.example.cosmetic.fragments.shopping.ProductDetailFragment"
+        android:name="com.example.cosmetic.view.fragments.shopping.ProductDetailFragment"
         android:label="ProductDetailFragment" >
         <argument
             android:name="product"
@@ -73,7 +73,7 @@
     </fragment>
     <fragment
         android:id="@+id/addressFragment"
-        android:name="com.example.cosmetic.fragments.shopping.AddressFragment"
+        android:name="com.example.cosmetic.view.fragments.shopping.AddressFragment"
         android:label="AddressFragment" >
         <argument
             android:name="address"
@@ -83,7 +83,7 @@
     </fragment>
     <fragment
         android:id="@+id/billingFragment"
-        android:name="com.example.cosmetic.fragments.shopping.BillingFragment"
+        android:name="com.example.cosmetic.view.fragments.shopping.BillingFragment"
         android:label="BillingFragment" >
         <action
             android:id="@+id/action_billingFragment_to_addressFragment"
@@ -100,11 +100,11 @@
     </fragment>
     <fragment
         android:id="@+id/userAccountFragment"
-        android:name="com.example.cosmetic.fragments.settings.UserAccountFragment"
+        android:name="com.example.cosmetic.view.fragments.settings.UserAccountFragment"
         android:label="UserAccountFragment" />
     <fragment
         android:id="@+id/allOrdersFragment"
-        android:name="com.example.cosmetic.fragments.shopping.AllOrdersFragment"
+        android:name="com.example.cosmetic.view.fragments.shopping.AllOrdersFragment"
         android:label="AllOrdersFragment" >
         <action
             android:id="@+id/action_allOrdersFragment_to_orderDetailFragment"
@@ -112,7 +112,7 @@
     </fragment>
     <fragment
         android:id="@+id/orderDetailFragment"
-        android:name="com.example.cosmetic.fragments.settings.OrderDetailFragment"
+        android:name="com.example.cosmetic.view.fragments.settings.OrderDetailFragment"
         android:label="OrderDetailFragment" >
         <argument
             android:name="order"
@@ -120,15 +120,15 @@
     </fragment>
     <fragment
         android:id="@+id/chatFragment"
-        android:name="com.example.cosmetic.fragments.shopping.ChatFragment"
+        android:name="com.example.cosmetic.view.fragments.shopping.ChatFragment"
         android:label="ChatFragment" />
     <fragment
         android:id="@+id/createPostFragment"
-        android:name="com.example.cosmetic.fragments.blog.CreatePostFragment"
+        android:name="com.example.cosmetic.view.fragments.blog.CreatePostFragment"
         android:label="CreatePostFragment" />
     <dialog
         android:id="@+id/commentFragment"
-        android:name="com.example.cosmetic.fragments.blog.CommentFragment"
+        android:name="com.example.cosmetic.view.fragments.blog.CommentFragment"
         android:label="CommentFragment" >
         <argument
             android:name="post"
@@ -136,7 +136,7 @@
     </dialog>
     <fragment
         android:id="@+id/notificationFragment"
-        android:name="com.example.cosmetic.fragments.settings.NotificationFragment"
+        android:name="com.example.cosmetic.view.fragments.settings.NotificationFragment"
         android:label="NotificationFragment" >
         <action
             android:id="@+id/action_notificationFragment_to_productDetailFragment"
@@ -144,7 +144,7 @@
     </fragment>
     <fragment
         android:id="@+id/listFavFragment"
-        android:name="com.example.cosmetic.fragments.settings.ListFavFragment"
+        android:name="com.example.cosmetic.view.fragments.settings.ListFavFragment"
         android:label="ListFavFragment" >
         <action
             android:id="@+id/action_listFavFragment_to_productDetailFragment"
@@ -152,7 +152,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchHashtagFragment"
-        android:name="com.example.cosmetic.fragments.blog.SearchHashtagFragment"
+        android:name="com.example.cosmetic.view.fragments.blog.SearchHashtagFragment"
         android:label="SearchHashtagFragment" >
         <action
             android:id="@+id/action_searchHashtagFragment_to_commentFragment"

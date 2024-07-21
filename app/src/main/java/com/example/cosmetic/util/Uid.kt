@@ -3,9 +3,8 @@ package com.example.cosmetic.util
 import android.app.Activity
 import android.content.Intent
 import android.widget.Toast
-import com.example.cosmetic.activities.LoginRegisterActivity
+import com.example.cosmetic.view.activities.LoginRegisterActivity
 import com.example.cosmetic.data.User
-import com.example.cosmetic.data.order.Order
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
@@ -25,9 +24,8 @@ object Uid {
             try {
                 val documentSnapshot = firestore.collection("user").document(uid).get().await()
                 val user = documentSnapshot.toObject(User::class.java)
-                user?.firstName ?: ""
+                "${user?.firstName} ${user?.lastName}" ?: ""
             } catch (e: Exception) {
-                // Xử lý lỗi nếu cần
                 ""
             }
         }
@@ -41,7 +39,6 @@ object Uid {
                 val user = documentSnapshot.toObject(User::class.java)
                 user?.imagePath ?: ""
             } catch (e: Exception) {
-                // Xử lý lỗi nếu cần
                 ""
             }
         }

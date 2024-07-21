@@ -1,5 +1,6 @@
 package com.example.cosmetic.firebase
 
+import android.util.Log
 import com.example.cosmetic.data.CartProduct
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

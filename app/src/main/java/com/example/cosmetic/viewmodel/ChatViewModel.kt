@@ -8,7 +8,7 @@ import com.example.cosmetic.CosmeticApplication
 import com.example.cosmetic.data.Message
 import com.example.cosmetic.data.User
 import com.example.cosmetic.util.Resource
-import com.example.cosmetic.util.SharedPrefs
+import com.example.cosmetic.util.Uid.getUserName
 import com.example.cosmetic.util.getTime
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -32,87 +32,84 @@ class ChatViewModel @Inject constructor(
     var username = ""
 
     init {
-        getUserName()
-        fetchMessage("00000")
+        getUserNameFun()
+        fetchMessage()
     }
 
-    fun getUserName() {
+    fun getUserNameFun() {
         viewModelScope.launch {
-            _user.emit(Resource.Loading())
+            username = getUserName(auth.uid!!)
         }
-        firestore.collection("user").document(auth.uid!!)
-            .addSnapshotListener { value, error ->
-                if (error != null) {
-                    viewModelScope.launch {
-                        _user.emit(Resource.Error(error.message.toString()))
-                    }
-                } else {
-                    val user = value?.toObject(User::class.java)
-                    user?.let {
-                        username = user.firstName
-                        viewModelScope.launch {
-                            _user.emit(Resource.Success(it))
-                        }
-                    }
-
-                }
-            }
+//        firestore.collection("user").document(auth.uid!!)
+//            .addSnapshotListener { value, error ->
+//                if (error != null) {
+//                    viewModelScope.launch {
+//                        _user.emit(Resource.Error(error.message.toString()))
+//                    }
+//                } else {
+//                    val user = value?.toObject(User::class.java)
+//                    user?.let {
+//                        username = user.firstName
+//                        viewModelScope.launch {
+//                            _user.emit(Resource.Success(it))
+//                        }
+//                    }
+//
+//                }
+//            }
     }
 
     fun sendMessage(
         sender: String,
         receiver: String,
-        friendname: String,
         message: String
     ) {
-        val context = getApplication<CosmeticApplication>().applicationContext
+     //   val context = getApplication<CosmeticApplication>().applicationContext
         val hashMap = hashMapOf<String, Any>(
             "sender" to sender,
             "receiver" to receiver,
             "message" to message,
             "time" to getTime()
         )
-        val uniqueId = listOf(sender, receiver).sorted()
-        uniqueId.joinToString(separator = "")
+//        val uniqueId = listOf(sender, receiver).sorted()
+//        uniqueId.joinToString(separator = "")
 
-        val friendnamesplit = friendname.split("\\s".toRegex())[0]
-        val mysharedPrefs = SharedPrefs(context)
-        mysharedPrefs.setValue("friendid", receiver)
-        mysharedPrefs.setValue("chatroomid", uniqueId.toString())
-        mysharedPrefs.setValue("friendname", friendnamesplit)
-        firestore.collection("Messages").document(uniqueId.toString()).collection("chats")
+//        val friendnamesplit = friendname.split("\\s".toRegex())[0]
+//        val mysharedPrefs = SharedPrefs(context)
+//        mysharedPrefs.setValue("friendid", receiver)
+//        mysharedPrefs.setValue("chatroomid", uniqueId.toString())
+//        mysharedPrefs.setValue("friendname", friendnamesplit)
+        firestore.collection("Messages").document(auth.uid!!).collection("chats")
             .document(getTime().toString()).set(hashMap).addOnCompleteListener { task ->
 
                 val setHashap = hashMapOf<String, Any>(
-                    "friendid" to receiver,
+                    "sender" to sender,
                     "time" to getTime(),
-                    "sender" to auth.uid!!,
                     "message" to message,
-                    "name" to friendname,
-                    "person" to "you"
+                    "name" to username
                 )
-                firestore.collection("Conversations").document("Conversation${auth.uid}").collection("conversation").document(receiver)
+                firestore.collection("Conversations").document("${auth.uid}")
                     .set(setHashap)
             }
-        firestore.collection("Conversations").document("Conversation${receiver}").collection("conversation").document(auth.uid!!)
-            .update(
-                "message",
-                messages.value!!,
-                "time",
-                getTime(),
-                "person",
-                username
-            )
+//        firestore.collection("Conversations").document(receiver)
+//            .update(
+//                "message",
+//                messages.value!!,
+//                "time",
+//                getTime(),
+//                "person",
+//                username
+//            )
     }
 
-    fun fetchMessage(friendid: String) {
+    fun fetchMessage() {
         viewModelScope.launch {
             _messages.emit((Resource.Loading()))
         }
-        val uniqueId = listOf(auth.uid!!, friendid).sorted()
-        uniqueId.joinToString(separator = "")
+//        val uniqueId = listOf(auth.uid!!, friendid).sorted()
+//        uniqueId.joinToString(separator = "")
 
-        firestore.collection("Messages").document(uniqueId.toString()).collection("chats")
+        firestore.collection("Messages").document(auth.uid!!).collection("chats")
             .orderBy("time", Query.Direction.ASCENDING)
             .addSnapshotListener { value, error ->
                 if (error != null) {
@@ -125,9 +122,8 @@ class ChatViewModel @Inject constructor(
                         val messageModel = document.toObject(Message::class.java)
 
                         if (messageModel!!.sender.equals(auth.uid!!) && messageModel.receiver.equals(
-                                friendid
-                            ) ||
-                            messageModel.sender.equals(friendid) && messageModel.receiver.equals(
+                                "00000") ||
+                            messageModel.sender.equals("00000") && messageModel.receiver.equals(
                                 auth.uid!!
                             )
                         ) {

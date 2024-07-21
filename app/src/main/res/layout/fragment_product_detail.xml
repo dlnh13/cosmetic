@@ -137,7 +137,7 @@
                     style="@style/h3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Color"
+                    android:text="Màu sắc"
                     android:textColor="@color/black" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -176,7 +176,7 @@
             android:layout_marginTop="45dp"
             android:layout_marginBottom="20dp"
             android:background="@color/pink"
-            android:text="Add to cart"
+            android:text="Thêm vào giỏ hàng"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/linearProductPref"
             app:layout_constraintStart_toStartOf="@id/linearProductPref"

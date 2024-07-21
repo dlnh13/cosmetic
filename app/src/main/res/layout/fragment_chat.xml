@@ -116,7 +116,7 @@
             android:layout_marginRight="16dp"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:hint="Enter Message"
+            android:hint="Nhập tin nhắn"
             android:importantForAutofill="no"
             android:inputType="textMultiLine"
             android:maxLines="6" />
@@ -127,7 +127,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:clickable="true"
-            android:text="Send"
+            android:text="Gửi"
             android:textSize="14sp" />
     </LinearLayout>
 

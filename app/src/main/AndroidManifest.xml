@@ -14,7 +14,7 @@
         android:theme="@style/Theme.Cosmetic"
         tools:targetApi="31">
         <activity
-            android:name=".activities.ShoppingActivity"
+            android:name=".view.activities.ShoppingActivity"
             android:exported="true"
             android:label="@string/title_activity_shopping"
             android:theme="@style/Theme.Cosmetic" >
@@ -24,7 +24,7 @@
         </intent-filter>
         </activity>
         <activity
-            android:name=".activities.LoginRegisterActivity"
+            android:name=".view.activities.LoginRegisterActivity"
             android:exported="true"
             android:theme="@style/Theme.Cosmetic">
 

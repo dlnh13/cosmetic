@@ -142,16 +142,16 @@
             android:digits="0123456789+"
             android:maxLength="11"/>
 
-        <TextView
-            android:id="@+id/tvUpdatePassword"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textSize="15dp"
-            android:text="Thay đổi mật khẩu"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@id/rightGuideline"
-            app:layout_constraintTop_toBottomOf="@+id/edPhoneNumber" />
+<!--        <TextView-->
+<!--            android:id="@+id/tvUpdatePassword"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:textSize="15dp"-->
+<!--            android:text="Thay đổi mật khẩu"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_constraintEnd_toEndOf="@id/rightGuideline"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/edPhoneNumber" />-->
 
         <br.com.simplepass.loadingbutton.customViews.CircularProgressButton
             android:id="@+id/buttonSave"
@@ -167,7 +167,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/rightGuideline"
             app:layout_constraintStart_toStartOf="@id/leftGuideline"
-            app:layout_constraintTop_toBottomOf="@+id/tvUpdatePassword" />
+            app:layout_constraintTop_toBottomOf="@+id/edPhoneNumber" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/leftGuideline"

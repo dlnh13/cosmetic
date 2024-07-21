@@ -33,7 +33,7 @@
         android:layout_weight="1"
         android:background="@drawable/search_box_background"
         android:iconifiedByDefault="false"
-        android:queryHint="Search hashtag"
+        android:queryHint="Tìm kiếm hashtag"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/logo" />

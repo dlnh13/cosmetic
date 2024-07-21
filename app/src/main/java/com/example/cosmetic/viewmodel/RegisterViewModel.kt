@@ -2,7 +2,6 @@ package com.example.cosmetic.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.example.cosmetic.data.User
-import com.example.cosmetic.util.Constants.USER_COLLECTION
 import com.example.cosmetic.util.RegisterFieldsState
 import com.example.cosmetic.util.RegisterValidation
 import com.example.cosmetic.util.Resource
@@ -53,7 +52,7 @@ class RegisterViewModel @Inject constructor(
     }
 
     private fun saveUserInfo(userUid: String, user: User) {
-        db.collection(USER_COLLECTION)
+        db.collection("user")
             .document(userUid)
             .set(user)
             .addOnSuccessListener {

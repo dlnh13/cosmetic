@@ -153,10 +153,10 @@
         android:background="@drawable/white_background"
         android:fontFamily="@font/poppins_light"
         android:gravity="start|center_vertical"
-        android:hint="Số iện thoại"
+        android:hint="Số điện thoại"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
-        android:phoneNumber="true"
+        android:inputType="phone"
         android:singleLine="true"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/rightGuideline"
@@ -174,20 +174,20 @@
         app:layout_constraintTop_toBottomOf="@id/linear"
         app:layout_constraintVertical_bias="0.494">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonDelelte"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="20dp"
-            android:layout_weight="1"
-            android:background="@drawable/white_background"
-            android:fontFamily="@font/poppins_thin"
-            android:text="Delete"
-            android:textAllCaps="false"
-            android:textColor="@color/g_gray700"
-            android:textSize="12dp"
-            android:visibility="visible" />
+<!--        <androidx.appcompat.widget.AppCompatButton-->
+<!--            android:id="@+id/buttonDelelte"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_marginEnd="5dp"-->
+<!--            android:layout_marginBottom="20dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="@drawable/white_background"-->
+<!--            android:fontFamily="@font/poppins_thin"-->
+<!--            android:text="Xoá"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:textColor="@color/g_gray700"-->
+<!--            android:textSize="12dp"-->
+<!--            android:visibility="visible" />-->
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonSave"
@@ -198,7 +198,7 @@
             android:layout_weight="1"
             android:background="@drawable/blue_background"
             android:fontFamily="@font/poppins_thin"
-            android:text="Save"
+            android:text="Lưu"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="12dp"
