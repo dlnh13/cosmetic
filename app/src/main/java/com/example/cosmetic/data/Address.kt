@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Address(
     val addressTitle: String,
-    val fullName: String,
+    val fullName: String, // so nha, phuong cu the
     val street: String,
     val phone: String,
     val district: String,
