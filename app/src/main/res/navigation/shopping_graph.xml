@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/shopping_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/userAccountFragment">
 
     <fragment
         android:id="@+id/homeFragment"
@@ -34,6 +34,9 @@
         <action
             android:id="@+id/action_profileFragment_to_addressFragment"
             app:destination="@id/addressFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_userAccountFragment"
+            app:destination="@id/userAccountFragment" />
     </fragment>
     <fragment
         android:id="@+id/productDetailFragment"
@@ -61,4 +64,8 @@
             android:name="products"
             app:argType="com.example.cosmetic.data.CartProduct[]" />
     </fragment>
+    <fragment
+        android:id="@+id/userAccountFragment"
+        android:name="com.example.cosmetic.fragments.settings.UserAccountFragment"
+        android:label="UserAccountFragment" />
 </navigation>
