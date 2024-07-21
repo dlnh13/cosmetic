@@ -1,7 +1,9 @@
 package com.example.cosmetic.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.Glide.init
 import com.example.cosmetic.data.CartProduct
 import com.example.cosmetic.data.Product
 import com.example.cosmetic.firebase.FirebaseCommon
@@ -31,14 +33,35 @@ class CartViewModel @Inject constructor(
         MutableStateFlow<Resource<List<CartProduct>>>(Resource.Unspecified())
     val cartProducts = _cartProducts.asStateFlow()
 
+
+//    val selectedProducts = mutableListOf<CartProduct>()
+
+//    MutableStateFlow<Resource<List<CartProduct>>>(Resource.Unspecified())
+    //val selectedProducts = _selectedProducts.asStateFlow()
+//    viewModelScope.launch {
+//        cartProducts.collect { resource ->
+//            Log.d("YourViewModel", "Cart products: ${resource.data!!.filter {!it.selected  }}")
+//        }}
     val productsPrice = cartProducts.map {
         when (it) {
             is Resource.Success -> {
-                calculatePrice(it.data!!)
+                val selectedProducts = it.data?.filter { it.selected }
+                calculatePrice(selectedProducts!!)
             }
             else -> null
         }
     }
+    fun test(data: List<CartProduct>): Float{
+        return data.filter { it.selected }.sumByDouble {cartProduct ->
+            (cartProduct.product.offerPercentage.getProductPrice(cartProduct.product.price) * cartProduct.quantity).toDouble()
+        }.toFloat()
+        }
+
+
+
+//        fun totalPrice(data:List<CartProduct>){
+//                CartProduct
+//    }
     private fun calculatePrice(data: List<CartProduct>): Float {
         return data.sumByDouble { cartProduct ->
             (cartProduct.product.offerPercentage.getProductPrice(cartProduct.product.price) * cartProduct.quantity).toDouble()
