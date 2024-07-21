@@ -9,18 +9,18 @@
         android:id="@+id/logo"
         android:layout_width="117dp"
         android:layout_height="29dp"
+        android:layout_marginLeft="20px"
+        android:layout_marginTop="40px"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="40px"
-        android:layout_marginLeft="20px"
         app:srcCompat="@drawable/img" />
-<!--    <ImageView-->
-<!--        android:id="@+id/icon_chat"-->
-<!--        android:layout_width="117dp"-->
-<!--        android:layout_height="29dp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="@id/logo"-->
-<!--        app:srcCompat="@drawable/ic_chat" />-->
+    <!--    <ImageView-->
+    <!--        android:id="@+id/icon_chat"-->
+    <!--        android:layout_width="117dp"-->
+    <!--        android:layout_height="29dp"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="@id/logo"-->
+    <!--        app:srcCompat="@drawable/ic_chat" />-->
     <LinearLayout
         android:id="@+id/homeHeader"
         android:layout_width="match_parent"
@@ -33,76 +33,116 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/searchBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@drawable/search_box_background">
-
-        <TextView
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/searchBar"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_thin"
-            android:paddingStart="20dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:singleLine="true"
-            android:text="Search Now"
-            android:textColor="#919394"
-            android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:layout_weight="1"
+            android:background="@drawable/search_box_background">
 
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="20dp"
-            android:src="@drawable/ic_search"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            <SearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:iconifiedByDefault="false"
+                android:queryHint="Tìm kiếm" />
+            <!--            <EditText-->
+            <!--                android:id="@+id/edSearch"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:hint="Tìm kiếm"-->
+            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                app:layout_constraintTop_toTopOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"/>-->
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <!--            <TextView-->
+            <!--                android:layout_width="0dp"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:fontFamily="@font/poppins_thin"-->
+            <!--                android:paddingStart="20dp"-->
+            <!--                android:paddingTop="10dp"-->
+            <!--                android:paddingBottom="10dp"-->
+            <!--                android:singleLine="true"-->
+            <!--                android:text="Search Now"-->
+            <!--                android:textColor="#919394"-->
+            <!--                android:textSize="15sp"-->
+            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+            <!--            <ImageView-->
+            <!--                android:layout_width="20dp"-->
+            <!--                android:layout_height="20dp"-->
+            <!--                android:layout_marginEnd="20dp"-->
+            <!--                android:src="@drawable/ic_search"-->
+            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <View
             android:layout_width="10dp"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
         <View
             android:layout_width="10dp"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_microphone"
+        <!--        <ImageView-->
+        <!--            android:layout_width="40dp"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:src="@drawable/ic_microphone"-->
+        <!--            android:background="@drawable/icon_background"-->
+        <!--            android:padding="10dp"/>-->
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/btn_mess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@drawable/icon_background"
-            android:padding="10dp"/>
+            android:padding="10dp"
+            android:src="@drawable/ic_mess" />
 
+        <ImageView
+            android:id="@+id/imgNotification"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/ic_notification" />
     </LinearLayout>
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabRippleColor="@color/white"
-        app:tabSelectedTextColor="@color/black"
-        app:tabMode="scrollable"
-        app:layout_constraintTop_toBottomOf="@id/homeHeader"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:tabIndicator="@null"
         android:layout_marginTop="5dp"
         android:contentDescription="Enter How Much Cookies You Want"
-        />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/homeHeader"
+        app:tabIndicator="@null"
+        app:tabMode="scrollable"
+        app:tabRippleColor="@color/white"
+        app:tabSelectedTextColor="@color/black" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpagerHome"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tabLayout"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSearchProduct"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tabLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,9 +1,12 @@
 package com.example.cosmetic.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cosmetic.data.Product
 import com.example.cosmetic.util.Resource
+import com.example.cosmetic.util.Uid.getUid
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainCategoryViewModel @Inject constructor(
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val auth: FirebaseAuth
 ): ViewModel(){
 
     private val _bestSellerProducts = MutableStateFlow<Resource<List<Product>>>(Resource.Unspecified())
@@ -83,6 +87,12 @@ class MainCategoryViewModel @Inject constructor(
                     }
                 }
         }
+    }
+    fun addFavorite(product: Product){
+        val documentReference = firestore.collection("Products")
+        firestore.collection("Products").document(product.id!!).collection("likedByUsers")
+            .document(getUid()).set(mapOf("previousPercentage" to product.offerPercentage))
+        firestore.collection("user").document(auth.uid!!).collection("favoriteProducts").document(product.id).set(mapOf("previousPercentage" to product.offerPercentage))
     }
 }
 internal data class PagingInfo(

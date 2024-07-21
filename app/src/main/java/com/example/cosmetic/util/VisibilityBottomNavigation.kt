@@ -1,8 +1,7 @@
 package com.example.cosmetic.util
 
 import androidx.fragment.app.Fragment
-import com.example.cosmetic.R
-import com.example.cosmetic.activities.ShoppingActivity
+import com.example.cosmetic.view.activities.ShoppingActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 fun Fragment.hideBottomNavigationView(){

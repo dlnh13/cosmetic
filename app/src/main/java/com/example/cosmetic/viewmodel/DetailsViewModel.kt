@@ -1,5 +1,6 @@
 package com.example.cosmetic.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 
@@ -9,7 +10,6 @@ import com.example.cosmetic.util.Resource
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.toObject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,17 +28,29 @@ class DetailsViewModel @Inject constructor(
     val addToCart = _addToCart.asStateFlow()
 
     fun addUpdateProductInCart(cartProduct: CartProduct) {
+        Log.d("test","test111")
+        Log.d("test","${auth.uid!!}")
+
         viewModelScope.launch { _addToCart.emit(Resource.Loading()) }
+        val del = firestore.collection("user").document(auth.uid!!).collection("cart")
+
         firestore.collection("user").document(auth.uid!!).collection("cart")
             .whereEqualTo("product.id", cartProduct.product.id).get()
             .addOnSuccessListener {
+                Log.d("test","test333")
+
                 it.documents.let {
+                    Log.d("test","test222")
                     if (it.isEmpty()) { // add new product
                         addNewProduct(cartProduct)
                     } else {
-                        val product = it.first().toObject(CartProduct::class.java)
-                        if (product == cartProduct) { // increase the quantity
-                            val documentId = it.first().id
+                        val existingProduct = it.first().toObject(CartProduct::class.java)
+                        val documentId = it.first().id
+                        if (
+                            existingProduct?.product?.id == cartProduct.product.id &&
+                            existingProduct?.selectedColor == cartProduct.selectedColor &&
+                            existingProduct?.selectedSize == cartProduct.selectedSize
+                        ) { // increase the quantity
                             increaseQuantity(documentId, cartProduct)
                         } else { // add new product
                             addNewProduct(cartProduct)
@@ -46,6 +58,8 @@ class DetailsViewModel @Inject constructor(
                     }
                 }
             }.addOnFailureListener {
+                Log.d("test","test444")
+
                 viewModelScope.launch { _addToCart.emit(Resource.Error(it.message.toString())) }
 
             }

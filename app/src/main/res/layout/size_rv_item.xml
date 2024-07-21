@@ -17,7 +17,7 @@
         android:id="@+id/imageColor"
         android:layout_width="50dp"
         android:layout_height="28dp"
-        android:src="@color/g_gray700"
+        android:src="@color/pink"
         app:layout_constraintStart_toStartOf="@id/imageShadow"
         app:layout_constraintTop_toTopOf="@id/imageShadow"
         app:layout_constraintEnd_toEndOf="@id/imageShadow"

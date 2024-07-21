@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintParent"
@@ -12,11 +13,11 @@
 
         <TextView
             android:id="@+id/tvProfile"
-            android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Profile"
+            android:text="Tài khoản"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,9 +25,9 @@
             android:id="@+id/constraintProfile"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/tvProfile"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tvProfile"
             app:layout_constraintTop_toBottomOf="@+id/tvProfile">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -36,8 +37,26 @@
                 android:src="@color/pink"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@+id/arrow"
+                app:layout_constraintTop_toTopOf="@+id/tv_edit_personal_details">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/ic_coins"
+                android:id="@+id/icCoin"/>
+            <TextView
+                android:id="@+id/tvCoin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100 coins"
+                android:textColor="@color/yellow"
+                android:textStyle="bold"
+                 />
+            </LinearLayout>
             <TextView
                 android:id="@+id/tvUserName"
                 android:layout_width="wrap_content"
@@ -49,37 +68,34 @@
                 app:layout_constraintTop_toTopOf="@+id/imageUser" />
 
 
-
             <TextView
                 android:id="@+id/tv_edit_personal_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Edit profile"
-                app:layout_constraintTop_toBottomOf="@id/tvUserName"
-                app:layout_constraintStart_toStartOf="@+id/tvUserName" />
+                android:text="Chỉnh sửa"
+                app:layout_constraintStart_toStartOf="@+id/tvUserName"
+                app:layout_constraintTop_toBottomOf="@id/tvUserName" />
 
             <ImageView
                 android:id="@+id/arrow"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-                android:src="@drawable/ic_arrow"
-                app:layout_constraintEnd_toEndOf="@id/constraintProfile"
-                app:layout_constraintTop_toTopOf="@id/tvUserName"
-                app:layout_constraintBottom_toBottomOf="@id/tv_edit_personal_details"
                 android:layout_marginRight="20px"
-                 />
-
+                android:src="@drawable/ic_arrow"
+                app:layout_constraintBottom_toBottomOf="@id/tv_edit_personal_details"
+                app:layout_constraintEnd_toEndOf="@id/constraintProfile"
+                app:layout_constraintTop_toTopOf="@id/tvUserName" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/tvOrders"
-            android:textStyle="normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="Orders"
+            android:textStyle="normal"
             app:layout_constraintStart_toStartOf="@id/guideline1"
             app:layout_constraintTop_toBottomOf="@id/constraintProfile" />
 
@@ -88,12 +104,12 @@
             android:id="@+id/linearOrders"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/guideline1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2"
-            app:layout_constraintTop_toBottomOf="@id/tvOrders"
-            android:orientation="vertical"
             android:layout_marginTop="10dp"
-            android:background="@drawable/search_box_background">
+            android:background="@drawable/search_box_background"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="@id/guideline2"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/tvOrders">
 
             <LinearLayout
                 android:id="@+id/linearAllOrders"
@@ -104,117 +120,116 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/ic_cart"
                     android:layout_gravity="center_vertical"
                     android:background="@drawable/settings_items_background"
+                    android:src="@drawable/ic_cart"
                     app:tint="@color/white" />
 
                 <TextView
                     android:id="@+id/tvAllOrders"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="All orders"
-                    android:textStyle="bold"
-                    android:layout_marginStart="15dp"
-                    android:layout_gravity="center_vertical"/>
-
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:src="@drawable/ic_arrow"
-                    android:layout_gravity="center_vertical"/>
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                android:id="@+id/linearTrackOrder">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_search"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/settings_items_background"
-                    app:tint="@color/white" />
-
-                <TextView
-                    android:id="@+id/tvTrackOrders"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Track Orders"
-                    android:textStyle="bold"
                     android:layout_marginStart="15dp"
-                    android:layout_gravity="center_vertical"/>
+                    android:layout_weight="1"
+                    android:text="Quản lí đơn hàng"
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:src="@drawable/ic_arrow"
-                    android:layout_gravity="center_vertical"/>
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_arrow" />
             </LinearLayout>
 
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/linearTrackOrder"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:orientation="horizontal">-->
+
+<!--                <ImageView-->
+<!--                    android:layout_width="30dp"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:layout_gravity="center_vertical"-->
+<!--                    android:background="@drawable/settings_items_background"-->
+<!--                    android:src="@drawable/ic_search"-->
+<!--                    app:tint="@color/white" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tvTrackOrders"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center_vertical"-->
+<!--                    android:layout_marginStart="15dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:text="Track Orders"-->
+<!--                    android:textStyle="bold" />-->
+
+<!--                <ImageView-->
+<!--                    android:layout_width="15dp"-->
+<!--                    android:layout_height="15dp"-->
+<!--                    android:layout_gravity="center_vertical"-->
+<!--                    android:src="@drawable/ic_arrow" />-->
+<!--            </LinearLayout>-->
+
             <LinearLayout
-                android:id="@+id/linearBilling"
+                android:id="@+id/linearAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/ic_billing"
                     android:layout_gravity="center_vertical"
                     android:background="@drawable/settings_items_background"
                     android:backgroundTint="#FF9800"
+                    android:src="@drawable/ic_billing"
                     app:tint="@color/white" />
 
                 <TextView
-                    android:id="@+id/tvBilling"
+                    android:id="@+id/tvAddress"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Billing"
-                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginStart="15dp"
-                    android:layout_gravity="center_vertical"/>
+                    android:layout_weight="1"
+                    android:text="Địa chỉ "
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:src="@drawable/ic_arrow"
-                    android:layout_gravity="center_vertical"/>
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_arrow" />
             </LinearLayout>
         </LinearLayout>
 
 
-
         <TextView
             android:id="@+id/tvNotifications"
-            android:textStyle="normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:text="Notifications"
+            android:textStyle="normal"
             app:layout_constraintStart_toStartOf="@id/guideline1"
             app:layout_constraintTop_toBottomOf="@id/linearOrders" />
 
         <LinearLayout
-            android:id="@+id/linearNotifications"
+            android:id="@+id/linearFavorite"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/guideline1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2"
-            app:layout_constraintTop_toBottomOf="@id/tvNotifications"
-            android:orientation="vertical"
             android:layout_marginTop="10dp"
-            android:background="@drawable/search_box_background">
+            android:background="@drawable/search_box_background"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="@id/guideline2"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/tvNotifications">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -224,73 +239,71 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/ic_notification"
                     android:layout_gravity="center_vertical"
                     android:background="@drawable/settings_items_background"
-                    app:tint="@color/white"
-                    android:backgroundTint="#4cd964"/>
+                    android:backgroundTint="#4cd964"
+                    android:src="@drawable/heart"
+                    app:tint="@color/white" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Notifications"
-                    android:textStyle="bold"
-                    android:layout_marginStart="15dp"
-                    android:layout_gravity="center_vertical"/>
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switchNotification"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:buttonTint="#4cd964"
-                    android:checked="true"
-                    />
+                    android:layout_marginStart="15dp"
+                    android:layout_weight="1"
+                    android:text="Yêu thích"
+                    android:textStyle="bold" />
+
+                <!--                <androidx.appcompat.widget.SwitchCompat-->
+                <!--                    android:id="@+id/switchNotification"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_gravity="center_vertical"-->
+                <!--                    android:buttonTint="#4cd964"-->
+                <!--                    android:checked="true"-->
+                <!--                    />-->
 
             </LinearLayout>
         </LinearLayout>
 
 
-
         <TextView
             android:id="@+id/tvRegional"
-            android:textStyle="normal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="Regional"
+            android:textStyle="normal"
             app:layout_constraintStart_toStartOf="@id/guideline1"
-            app:layout_constraintTop_toBottomOf="@id/linearNotifications" />
+            app:layout_constraintTop_toBottomOf="@id/linearFavorite" />
 
         <LinearLayout
-            android:background="@drawable/search_box_background"
             android:id="@+id/linear_regional"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@id/guideline1"
-            app:layout_constraintEnd_toEndOf="@id/guideline2"
-            app:layout_constraintTop_toBottomOf="@id/tvRegional"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/search_box_background"
             android:orientation="vertical"
-            android:layout_marginTop="10dp">
+            app:layout_constraintEnd_toEndOf="@id/guideline2"
+            app:layout_constraintStart_toStartOf="@id/guideline1"
+            app:layout_constraintTop_toBottomOf="@id/tvRegional">
 
             <LinearLayout
                 android:id="@+id/linearLogOut"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp">
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/ic_logout"
                     android:layout_gravity="center_vertical"
                     android:background="@drawable/settings_items_background"
                     android:backgroundTint="#ff5823"
-                    app:tint="@color/white"
-                    />
+                    android:src="@drawable/ic_logout"
+                    app:tint="@color/white" />
 
                 <TextView
                     android:id="@+id/logout"
@@ -299,14 +312,14 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="15dp"
                     android:layout_weight="1"
-                    android:text="Logout"
+                    android:text="Đăng xuất"
                     android:textStyle="bold" />
 
                 <ImageView
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:src="@drawable/ic_arrow"
-                    android:layout_gravity="center_vertical"/>
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_arrow" />
             </LinearLayout>
 
 

@@ -33,15 +33,6 @@ class CartViewModel @Inject constructor(
         MutableStateFlow<Resource<List<CartProduct>>>(Resource.Unspecified())
     val cartProducts = _cartProducts.asStateFlow()
 
-
-//    val selectedProducts = mutableListOf<CartProduct>()
-
-//    MutableStateFlow<Resource<List<CartProduct>>>(Resource.Unspecified())
-    //val selectedProducts = _selectedProducts.asStateFlow()
-//    viewModelScope.launch {
-//        cartProducts.collect { resource ->
-//            Log.d("YourViewModel", "Cart products: ${resource.data!!.filter {!it.selected  }}")
-//        }}
     val productsPrice = cartProducts.map {
         when (it) {
             is Resource.Success -> {
@@ -57,11 +48,6 @@ class CartViewModel @Inject constructor(
         }.toFloat()
         }
 
-
-
-//        fun totalPrice(data:List<CartProduct>){
-//                CartProduct
-//    }
     private fun calculatePrice(data: List<CartProduct>): Float {
         return data.sumByDouble { cartProduct ->
             (cartProduct.product.offerPercentage.getProductPrice(cartProduct.product.price) * cartProduct.quantity).toDouble()
@@ -101,11 +87,15 @@ class CartViewModel @Inject constructor(
         cartProduct: CartProduct,
         quantityChange: FirebaseCommon.QuantityChange
     ) {
+        Log.d("test","test666")
+
         val index = cartProducts.value.data?.indexOf(cartProduct)
         if (index != null && index != -1) {
             val documentId = cartProductDocuments[index].id
             when (quantityChange) {
                 FirebaseCommon.QuantityChange.INCREASE -> {
+                    Log.d("test","test666")
+
                     viewModelScope.launch { _cartProducts.emit(Resource.Loading()) }
                     increaseQuantity(documentId)
                 }
@@ -122,6 +112,8 @@ class CartViewModel @Inject constructor(
         }
     }
     private fun decreaseQuantity(documentId: String) {
+        Log.d("test","test888")
+
         firebaseCommon.decreaseQuantity(documentId) { result, exception ->
             if (exception != null)
                 viewModelScope.launch { _cartProducts.emit(Resource.Error(exception.message.toString())) }
@@ -129,6 +121,8 @@ class CartViewModel @Inject constructor(
     }
 
     private fun increaseQuantity(documentId: String) {
+        Log.d("test","test777")
+
         firebaseCommon.increaseQuantity(documentId) { result, exception ->
             if (exception != null)
                 viewModelScope.launch { _cartProducts.emit(Resource.Error(exception.message.toString())) }

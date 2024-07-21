@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.example.cosmetic.data.Address
 import com.example.cosmetic.data.CartProduct
 import kotlinx.parcelize.Parcelize
+import org.checkerframework.checker.units.qual.mm
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -15,5 +16,9 @@ data class Order(
     val products: List<CartProduct> = emptyList(),
     val address: Address = Address(),
     val date: String = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(Date()),
-    val orderId: Long = nextLong(0, 100_000_000_000) + totalPrice.toLong()
-):Parcelable
+    val orderId: Long = nextLong(0, 100_000_000_000) + totalPrice.toLong(),
+    val userId : String
+):Parcelable{
+    constructor() : this("",0f, emptyList(), Address(),"",0L,"")
+}
+

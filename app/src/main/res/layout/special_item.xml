@@ -65,7 +65,7 @@
             android:layout_height="28dp"
             android:background="@drawable/blue_background"
             android:fontFamily="@font/poppins_light"
-            android:text="See product"
+            android:text="Xem"
             android:textColor="@color/white"
             android:textSize="10dp"
             android:textStyle="bold"
